@@ -11,6 +11,19 @@ class Page2 extends StatefulWidget {
 
 class _PostListState extends State<Page2> {
   List<dynamic> _postData = [];
+  late final ScrollController _scrollController;
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
 
   Future<void> fetchData() async {
     final response = await http.get(
@@ -41,23 +54,41 @@ class _PostListState extends State<Page2> {
             ),
             const SizedBox(height: 20),
             Expanded(
-              child: ListView.builder(
-                itemCount: _postData.length,
-                itemBuilder: (context, index) {
-                  return Card(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Padding(
-                          padding: const EdgeInsets.all(8.0),
-                          child: Text(
-                            _postData[index]['team']['clubName'] ?? 'No Name',
-                          ),
+              child: Scrollbar(
+                controller: _scrollController,
+                thumbVisibility: true,
+                thickness: 8,
+                radius: const Radius.circular(8),
+                child: ListView.builder(
+                  controller: _scrollController,
+                  itemCount: _postData.length,
+                  itemBuilder: (context, index) {
+                    return Card(
+                      color: Colors.white,
+                      elevation: 2, // ombra
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                        side: BorderSide(
+                          color: Colors.grey.shade300, // colore del bordo
+                          width: 1, // spessore del bordo
                         ),
-                      ],
-                    ),
-                  );
-                },
+                      ),
+                      clipBehavior: Clip
+                          .antiAlias, // importante se vuoi che i figli rispettino il radius
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Text(
+                              _postData[index]['team']['clubName'] ?? 'No Name',
+                            ),
+                          ),
+                        ],
+                      ),
+                    );
+                  },
+                ),
               ),
             ),
           ],
