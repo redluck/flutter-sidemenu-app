@@ -10,25 +10,33 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      # ✅ Step 1: Clona il repo senza submodules
       - name: Checkout repository
         uses: actions/checkout@v4
+        with:
+          submodules: false
+          fetch-depth: 0
 
+      # ✅ Step 2: Installa Flutter (versione compatibile con Dart 3.9)
       - name: Setup Flutter
         uses: subosito/flutter-action@v2
         with:
           flutter-version: '3.35.7'
+          channel: 'stable'
 
+      # ✅ Step 3: Installa le dipendenze del progetto
       - name: Install dependencies
         working-directory: my_app
         run: flutter pub get
 
+      # ✅ Step 4: Build APK
       - name: Build APK (release)
         working-directory: my_app
         run: flutter build apk --release
 
+      # ✅ Step 5: Carica l'APK come artifact
       - name: Upload APK artifact
         uses: actions/upload-artifact@v4
         with:
           name: app-release-apk
           path: my_app/build/app/outputs/flutter-apk/app-release.apk
-          submodules: false
