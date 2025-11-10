@@ -17,6 +17,7 @@ class _PostListState extends State<Page2> {
   void initState() {
     super.initState();
     _scrollController = ScrollController();
+    fetchData();
   }
 
   @override
@@ -48,11 +49,17 @@ class _PostListState extends State<Page2> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            ElevatedButton(
-              onPressed: fetchData,
-              child: const Text('Fetch Data'),
+            Container(
+              height: 50,
+              width: double.infinity,
+              margin: const EdgeInsets.only(top: 4.0, left: 4.0, right: 4.0),
+              decoration: BoxDecoration(
+                color: Colors.blue.shade50,
+                border: Border.all(color: Colors.blueAccent, width: 1),
+                borderRadius: BorderRadius.circular(8),
+              ),
+              child: const Center(child: Text('Spazio decorato')),
             ),
-            const SizedBox(height: 20),
             Expanded(
               child: Scrollbar(
                 controller: _scrollController,
@@ -73,8 +80,7 @@ class _PostListState extends State<Page2> {
                           width: 1, // spessore del bordo
                         ),
                       ),
-                      clipBehavior: Clip
-                          .antiAlias, // importante se vuoi che i figli rispettino il radius
+                      clipBehavior: Clip.antiAlias, // importante se vuoi che i figli rispettino il radius
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
