@@ -28,9 +28,7 @@ class _PostListState extends State<Page2> {
 
   Future<void> fetchData() async {
     final response = await http.get(
-      Uri.parse(
-        'https://redluck-25.synology.me:3000/winners/basket/male/euroleague',
-      ),
+      Uri.parse('https://jsonplaceholder.typicode.com/albums'),
     );
 
     if (response.statusCode == 200) {
@@ -80,14 +78,15 @@ class _PostListState extends State<Page2> {
                           width: 1, // spessore del bordo
                         ),
                       ),
-                      clipBehavior: Clip.antiAlias, // importante se vuoi che i figli rispettino il radius
+                      clipBehavior: Clip
+                          .antiAlias, // importante se vuoi che i figli rispettino il radius
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Padding(
                             padding: const EdgeInsets.all(8.0),
                             child: Text(
-                              _postData[index]['team']['clubName'] ?? 'No Name',
+                              _postData[index]['title'] ?? 'No title',
                             ),
                           ),
                         ],
