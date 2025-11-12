@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class Page1 extends StatelessWidget {
-  const Page1({super.key});
+class Page3 extends StatelessWidget {
+  const Page3({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -12,11 +12,11 @@ class Page1 extends StatelessWidget {
           Icon(Icons.home, size: 80, color: Colors.blueGrey),
           SizedBox(height: 20),
           Text(
-            'Page 1',
+            'Page 3',
             style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
           ),
           Text(
-            'Text for Page number 1.',
+            'Text for Page number 3.',
             style: TextStyle(fontSize: 16, color: Colors.grey),
           ),
         ],

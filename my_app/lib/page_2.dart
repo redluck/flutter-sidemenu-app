@@ -6,7 +6,7 @@ class Page2 extends StatefulWidget {
   const Page2({super.key});
 
   @override
-  _PostListState createState() => _PostListState();
+  State<Page2> createState() => _PostListState();
 }
 
 class _PostListState extends State<Page2> {
