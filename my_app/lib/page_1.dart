@@ -2,35 +2,151 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 
-class Page1 extends StatelessWidget {
+class Page1 extends StatefulWidget {
   const Page1({super.key});
 
   @override
+  State<Page1> createState() => _Page1State();
+}
+
+class _Page1State extends State<Page1> {
+  bool _isCollapsed = false;
+
+  static const double _expandedHeight = 264.0;
+  static const double _collapsedHeight = 88.0;
+
+  void _toggleCollapse() {
+    setState(() {
+      _isCollapsed = !_isCollapsed;
+    });
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return FlutterMap(
-      options: MapOptions(
-        initialCenter: LatLng(41.9028, 12.4964),
-        initialZoom: 13,
-      ),
-      // `flutter_map` v8 uses `children` instead of the old `layers` API.
-      children: [
-        TileLayer(
-          urlTemplate:
-              "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
-          subdomains: ['a', 'b', 'c'],
-        ),
-        // Marker on Rome
-        MarkerLayer(
-          markers: [
-            Marker(
-              point: LatLng(41.8902, 12.4922),
-              width: 40,
-              height: 40,
-              child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+    return Scaffold(
+      body: SafeArea(
+        child: Stack(
+          children: [
+            /*====================================================================================================+
+            | Mappa che riempie lo schermo                                                                        |
+            +====================================================================================================*/
+            Positioned.fill(
+              child: FlutterMap(
+                options: MapOptions(
+                  initialCenter: LatLng(41.9028, 12.4964),
+                  initialZoom: 13,
+                ),
+                // `flutter_map` v8 uses `children` instead of the old `layers` API.
+                children: [
+                  TileLayer(
+                    urlTemplate:
+                        "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
+                    subdomains: ['a', 'b', 'c'],
+                  ),
+                  // Marker on Rome
+                  MarkerLayer(
+                    markers: [
+                      Marker(
+                        point: LatLng(41.8902, 12.4922),
+                        width: 40,
+                        height: 40,
+                        child: const Icon(
+                          Icons.location_on,
+                          color: Colors.red,
+                          size: 40,
+                        ),
+                      ),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+            /*====================================================================================================+
+            | Div fisso sotto la mappa (overlay) con comportamento collapse/expand                                |
+            +====================================================================================================*/
+            Positioned(
+              left: 8,
+              right: 8,
+              bottom: 8,
+              child: Material(
+                elevation: 8,
+                borderRadius: BorderRadius.circular(12),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 100),
+                  curve: Curves.easeInOut,
+                  height: _isCollapsed ? _collapsedHeight : _expandedHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Stack(
+                    children: [
+                      // Contenuto principale (visibile solo quando expanded)
+                      Opacity(
+                        opacity: _isCollapsed ? 0.0 : 1.0,
+                        child: Row(
+                          children: [
+                            const CircleAvatar(
+                              radius: 26,
+                              backgroundColor: Colors.blueAccent,
+                              child: Icon(Icons.place, color: Colors.white),
+                            ),
+                            const SizedBox(width: 12),
+                            Expanded(
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: const [
+                                  Text(
+                                    'Indirizzo o info',
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                  SizedBox(height: 6),
+                                  Text(
+                                    'Dettagli aggiuntivi qui',
+                                    style: TextStyle(color: Colors.grey),
+                                  ),
+                                ],
+                              ),
+                            ),
+                            TextButton(
+                              onPressed: () {},
+                              child: const Text('Azione'),
+                            ),
+                          ],
+                        ),
+                      ),
+                      /*--------------------------------------------------+
+                      | Icona in alto a destra per ridurre/espandere      |
+                      +--------------------------------------------------*/
+                      Positioned(
+                        top: 0,
+                        right: 0,
+                        child: IconButton(
+                          icon: Icon(
+                            _isCollapsed
+                                ? Icons.open_in_full
+                                : Icons.close_fullscreen,
+                          ),
+                          tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
+                          onPressed: _toggleCollapse,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              ),
             ),
           ],
         ),
-      ],
+      ),
     );
   }
 }
