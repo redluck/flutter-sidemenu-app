@@ -12,7 +12,7 @@ class Page1 extends StatefulWidget {
 class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
 
-  static const double _expandedHeight = 264.0;
+  static const double _expandedHeight = 440.0;
   static const double _collapsedHeight = 88.0;
 
   void _toggleCollapse() {
@@ -71,6 +71,9 @@ class _Page1State extends State<Page1> {
               child: Material(
                 elevation: 8,
                 borderRadius: BorderRadius.circular(12),
+                /*--------------------------------------------------+
+                | Div                                               |
+                +--------------------------------------------------*/
                 child: AnimatedContainer(
                   duration: const Duration(milliseconds: 100),
                   curve: Curves.easeInOut,
@@ -85,44 +88,46 @@ class _Page1State extends State<Page1> {
                   ),
                   child: Stack(
                     children: [
-                      // Contenuto principale (visibile solo quando expanded)
-                      Opacity(
-                        opacity: _isCollapsed ? 0.0 : 1.0,
+                      // Contenuto principale
+                      Container(
+                        color: Colors.grey[100],
                         child: Row(
                           children: [
-                            const CircleAvatar(
-                              radius: 26,
-                              backgroundColor: Colors.blueAccent,
-                              child: Icon(Icons.place, color: Colors.white),
-                            ),
                             const SizedBox(width: 12),
                             Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: const [
-                                  Text(
-                                    'Indirizzo o info',
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  Column(
+                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: const [
+                                      Text(
+                                        'Indirizzo o info',
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      SizedBox(height: 6),
+                                      Text(
+                                        'Dettagli aggiuntivi qui',
+                                        style: TextStyle(color: Colors.grey),
+                                      ),
+                                    ],
                                   ),
-                                  SizedBox(height: 6),
-                                  Text(
-                                    'Dettagli aggiuntivi qui',
-                                    style: TextStyle(color: Colors.grey),
+                                  TextButton(
+                                    onPressed: () {},
+                                    child: const Text('Azione'),
                                   ),
                                 ],
                               ),
                             ),
-                            TextButton(
-                              onPressed: () {},
-                              child: const Text('Azione'),
-                            ),
                           ],
                         ),
                       ),
+                      // chiusura Opacity
                       /*--------------------------------------------------+
                       | Icona in alto a destra per ridurre/espandere      |
                       +--------------------------------------------------*/
