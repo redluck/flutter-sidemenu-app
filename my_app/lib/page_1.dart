@@ -89,7 +89,9 @@ class _Page1State extends State<Page1> {
                   child: Column(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      // Row con il pulsante espandi/riduci
+                      /*--------------------------------------------------+
+                      | Row con il pulsante espandi/riduci                |
+                      +--------------------------------------------------*/
                       Row(
                         mainAxisAlignment: MainAxisAlignment.end,
                         children: [
@@ -104,7 +106,9 @@ class _Page1State extends State<Page1> {
                           ),
                         ],
                       ),
-                      // Row principale con info e azione
+                      /*--------------------------------------------------+
+                      | Row con info e azione                             |
+                      +--------------------------------------------------*/
                       Container(
                         height: 56,
                         color: Colors.grey[100],
