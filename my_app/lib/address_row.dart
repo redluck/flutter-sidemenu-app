@@ -42,7 +42,13 @@ class AddressRow extends StatelessWidget {
                       ),
                     ],
                   ),
-                  TextButton(onPressed: () {}, child: const Text('Azione')),
+                  Padding(
+                    padding: const EdgeInsets.only(right: 12),
+                    child: TextButton(
+                      onPressed: () {},
+                      child: const Text('Azione'),
+                    ),
+                  ),
                 ],
               ),
             ),

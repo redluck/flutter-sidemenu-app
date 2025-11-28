@@ -14,7 +14,7 @@ class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
 
   static const double _expandedHeight = 440;
-  static const double _collapsedHeight = 120;
+  static const double _collapsedHeight = 115;
 
   void _toggleCollapse() {
     setState(() {
