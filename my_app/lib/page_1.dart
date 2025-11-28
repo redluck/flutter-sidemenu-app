@@ -118,6 +118,30 @@ class _Page1State extends State<Page1> {
                         title: 'Indirizzo o info 2',
                         subtitle: 'Dettagli aggiuntivi qui 2',
                       ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 3',
+                        subtitle: 'Dettagli aggiuntivi qui 3',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 4',
+                        subtitle: 'Dettagli aggiuntivi qui 4',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 5',
+                        subtitle: 'Dettagli aggiuntivi qui 5',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 6',
+                        subtitle: 'Dettagli aggiuntivi qui 6',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 7',
+                        subtitle: 'Dettagli aggiuntivi qui 7',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 8',
+                        subtitle: 'Dettagli aggiuntivi qui 8',
+                      ),
                     ],
                   ),
                 ),
