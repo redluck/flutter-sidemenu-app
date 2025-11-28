@@ -110,8 +110,14 @@ class _Page1State extends State<Page1> {
                       /*--------------------------------------------------+
                       | Row con info e azione                             |
                       +--------------------------------------------------*/
-                      const AddressRow(),
-                      const AddressRow(),
+                      const AddressRow(
+                        title: 'Indirizzo o info 1',
+                        subtitle: 'Dettagli aggiuntivi qui 1',
+                      ),
+                      const AddressRow(
+                        title: 'Indirizzo o info 2',
+                        subtitle: 'Dettagli aggiuntivi qui 2',
+                      ),
                     ],
                   ),
                 ),

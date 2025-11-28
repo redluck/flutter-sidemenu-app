@@ -1,12 +1,15 @@
 import 'package:flutter/material.dart';
 
 class AddressRow extends StatelessWidget {
-  const AddressRow({super.key});
+  final String title;
+  final String subtitle;
+
+  const AddressRow({super.key, required this.title, required this.subtitle});
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 4), // margin bottom
+      padding: const EdgeInsets.only(bottom: 4),
       child: Container(
         height: 56,
         decoration: BoxDecoration(
@@ -24,18 +27,18 @@ class AddressRow extends StatelessWidget {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
+                    children: [
                       Text(
-                        'Indirizzo o info',
-                        style: TextStyle(
+                        title,
+                        style: const TextStyle(
                           fontSize: 15,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      SizedBox(height: 6),
+                      const SizedBox(height: 6),
                       Text(
-                        'Dettagli aggiuntivi qui',
-                        style: TextStyle(color: Colors.grey),
+                        subtitle,
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
