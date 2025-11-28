@@ -88,19 +88,24 @@ class _Page1State extends State<Page1> {
                   ),
                   child: Stack(
                     children: [
-                      // Contenuto principale
+                      /*--------------------------------------------------+
+                      | Row con altezza fissa                             |
+                      +--------------------------------------------------*/
                       Container(
+                        height: 56,
                         color: Colors.grey[100],
                         child: Row(
                           children: [
                             const SizedBox(width: 12),
                             Expanded(
                               child: Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 children: [
                                   Column(
-                                    crossAxisAlignment: CrossAxisAlignment.start,
+                                    crossAxisAlignment:
+                                        CrossAxisAlignment.start,
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: const [
                                       Text(
