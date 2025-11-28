@@ -12,8 +12,8 @@ class Page1 extends StatefulWidget {
 class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
 
-  static const double _expandedHeight = 440.0;
-  static const double _collapsedHeight = 88.0;
+  static const double _expandedHeight = 440;
+  static const double _collapsedHeight = 120;
 
   void _toggleCollapse() {
     setState(() {
@@ -40,7 +40,7 @@ class _Page1State extends State<Page1> {
                 children: [
                   TileLayer(
                     urlTemplate:
-                        "https://api.maptiler.com/maps/streets/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
+                        "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
                     subdomains: ['a', 'b', 'c'],
                   ),
                   // Marker on Rome
@@ -75,7 +75,7 @@ class _Page1State extends State<Page1> {
                 | Div                                               |
                 +--------------------------------------------------*/
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 50),
                   curve: Curves.easeInOut,
                   height: _isCollapsed ? _collapsedHeight : _expandedHeight,
                   padding: const EdgeInsets.symmetric(
@@ -86,11 +86,25 @@ class _Page1State extends State<Page1> {
                     color: Colors.white,
                     borderRadius: BorderRadius.circular(12),
                   ),
-                  child: Stack(
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
                     children: [
-                      /*--------------------------------------------------+
-                      | Row con altezza fissa                             |
-                      +--------------------------------------------------*/
+                      // Row con il pulsante espandi/riduci
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          IconButton(
+                            icon: Icon(
+                              _isCollapsed
+                                  ? Icons.open_in_full
+                                  : Icons.close_fullscreen,
+                            ),
+                            tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
+                            onPressed: _toggleCollapse,
+                          ),
+                        ],
+                      ),
+                      // Row principale con info e azione
                       Container(
                         height: 56,
                         color: Colors.grey[100],
@@ -130,23 +144,6 @@ class _Page1State extends State<Page1> {
                               ),
                             ),
                           ],
-                        ),
-                      ),
-                      // chiusura Opacity
-                      /*--------------------------------------------------+
-                      | Icona in alto a destra per ridurre/espandere      |
-                      +--------------------------------------------------*/
-                      Positioned(
-                        top: 0,
-                        right: 0,
-                        child: IconButton(
-                          icon: Icon(
-                            _isCollapsed
-                                ? Icons.open_in_full
-                                : Icons.close_fullscreen,
-                          ),
-                          tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
-                          onPressed: _toggleCollapse,
                         ),
                       ),
                     ],
