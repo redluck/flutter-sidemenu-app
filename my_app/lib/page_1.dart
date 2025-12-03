@@ -16,6 +16,8 @@ class _Page1State extends State<Page1> {
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 115;
 
+  final ScrollController _scrollController = ScrollController();
+
   void _toggleCollapse() {
     setState(() {
       _isCollapsed = !_isCollapsed;
@@ -112,8 +114,10 @@ class _Page1State extends State<Page1> {
                       +--------------------------------------------------*/
                       Expanded(
                         child: Scrollbar(
+                          controller: _scrollController,
                           thumbVisibility: true,
                           child: SingleChildScrollView(
+                            controller: _scrollController,
                             child: Column(
                               children: const [
                                 AddressRow(
