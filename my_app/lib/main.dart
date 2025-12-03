@@ -1,9 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 import 'page_3.dart';
 import 'page_2.dart';
 import 'page_1.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform);
   runApp(const MyApp());
 }
 
@@ -70,7 +74,10 @@ class _HomePageState extends State<HomePage> {
       | appBar                   |
       +-------------------------*/
       appBar: AppBar(
-        title: Text(_appBarTitles[_selectedIndex], style: TextStyle(color: Colors.white)),
+        title: Text(
+          _appBarTitles[_selectedIndex],
+          style: TextStyle(color: Colors.white),
+        ),
         backgroundColor: Color(0xFF1B5E20),
       ),
       /*-------------------------+

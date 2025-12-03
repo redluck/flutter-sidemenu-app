@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "548711261444",
+    "project_id": "maptilers-landmarks",
+    "storage_bucket": "maptilers-landmarks.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:548711261444:android:1a303cfaecfb8459729c51",
+        "android_client_info": {
+          "package_name": "com.example.my_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEfuQY_Xtj5OcbzOmbTFpMte7RerOzzRM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
