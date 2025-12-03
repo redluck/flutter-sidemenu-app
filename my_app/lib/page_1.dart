@@ -17,8 +17,6 @@ class _Page1State extends State<Page1> {
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 115;
 
-  final ScrollController _scrollController = ScrollController();
-
   void _toggleCollapse() {
     setState(() {
       _isCollapsed = !_isCollapsed;
@@ -79,7 +77,7 @@ class _Page1State extends State<Page1> {
                 | Div                                               |
                 +--------------------------------------------------*/
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 50),
+                  duration: const Duration(milliseconds: 100),
                   curve: Curves.easeInOut,
                   height: _isCollapsed ? _collapsedHeight : _expandedHeight,
                   padding: const EdgeInsets.symmetric(
