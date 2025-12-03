@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
-import 'address_row.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'address_row.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
@@ -110,50 +111,71 @@ class _Page1State extends State<Page1> {
                         ],
                       ),
                       /*--------------------------------------------------+
-                      | AddressRow scrollable con scrollbar               |
+                      |                                                   |
                       +--------------------------------------------------*/
                       Expanded(
-                        child: Scrollbar(
-                          controller: _scrollController,
-                          thumbVisibility: true,
-                          child: SingleChildScrollView(
-                            controller: _scrollController,
-                            child: Column(
-                              children: const [
-                                AddressRow(
-                                  title: 'Indirizzo o info 1',
-                                  subtitle: 'Dettagli aggiuntivi qui 1',
+                        child: AnimatedContainer(
+                          duration: const Duration(milliseconds: 200),
+                          curve: Curves.easeInOut,
+                          height: _isCollapsed
+                              ? _collapsedHeight
+                              : _expandedHeight,
+                          child: StreamBuilder<QuerySnapshot>(
+                            stream: FirebaseFirestore.instance
+                                .collection('places')
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasError) {
+                                return Center(
+                                  child: Text('Error: ${snapshot.error}'),
+                                );
+                              }
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircularProgressIndicator(),
+                                );
+                              }
+
+                              final docs = snapshot.data?.docs ?? [];
+                              if (docs.isEmpty) {
+                                return const Center(
+                                  child: Text('No places yet'),
+                                );
+                              }
+
+                              return ListView.builder(
+                                itemCount: docs.length,
+                                padding: const EdgeInsets.symmetric(
+                                  vertical: 6,
                                 ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 2',
-                                  subtitle: 'Dettagli aggiuntivi qui 2',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 3',
-                                  subtitle: 'Dettagli aggiuntivi qui 3',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 4',
-                                  subtitle: 'Dettagli aggiuntivi qui 4',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 5',
-                                  subtitle: 'Dettagli aggiuntivi qui 5',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 6',
-                                  subtitle: 'Dettagli aggiuntivi qui 6',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 7',
-                                  subtitle: 'Dettagli aggiuntivi qui 7',
-                                ),
-                                AddressRow(
-                                  title: 'Indirizzo o info 8',
-                                  subtitle: 'Dettagli aggiuntivi qui 8',
-                                ),
-                              ],
-                            ),
+                                itemBuilder: (context, index) {
+                                  final place = docs[index];
+                                  return InkWell(
+                                    borderRadius: BorderRadius.circular(12),
+                                    onTap: () {},
+                                    child: Container(
+                                      margin: const EdgeInsets.symmetric(
+                                        vertical: 6,
+                                        horizontal: 12,
+                                      ),
+                                      padding: const EdgeInsets.all(4),
+                                      decoration: BoxDecoration(
+                                        color: Colors.grey.shade200,
+                                        borderRadius: BorderRadius.circular(12),
+                                      ),
+                                      child: ListTile(
+                                        contentPadding: const EdgeInsets.all(8),
+                                        title: Text(place['name'] ?? ''),
+                                        subtitle: Text(
+                                          place['description'] ?? '',
+                                        ),
+                                      ),
+                                    ),
+                                  );
+                                },
+                              );
+                            },
                           ),
                         ),
                       ),
