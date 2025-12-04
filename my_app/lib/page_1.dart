@@ -13,9 +13,21 @@ class Page1 extends StatefulWidget {
 
 class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
-
+  late final ScrollController _listController;
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
+
+  @override
+  void initState() {
+    super.initState();
+    _listController = ScrollController();
+  }
+
+  @override
+  void dispose() {
+    _listController.dispose();
+    super.dispose();
+  }
 
   void _toggleCollapse() {
     setState(() {
@@ -64,7 +76,7 @@ class _Page1State extends State<Page1> {
               ),
             ),
             /*====================================================================================================+
-            | Div fisso sotto la mappa (overlay) con comportamento collapse/expand                                |
+            | Div fisso sotto la mappa con comportamento collapse/expand                                          |
             +====================================================================================================*/
             Positioned(
               left: 8,
@@ -73,11 +85,8 @@ class _Page1State extends State<Page1> {
               child: Material(
                 elevation: 8,
                 borderRadius: BorderRadius.circular(12),
-                /*--------------------------------------------------+
-                | Div                                               |
-                +--------------------------------------------------*/
                 child: AnimatedContainer(
-                  duration: const Duration(milliseconds: 100),
+                  duration: const Duration(milliseconds: 150),
                   curve: Curves.easeInOut,
                   height: _isCollapsed ? _collapsedHeight : _expandedHeight,
                   padding: const EdgeInsets.symmetric(
@@ -100,7 +109,7 @@ class _Page1State extends State<Page1> {
                             icon: Icon(
                               Icons.my_location,
                               color: Colors.green[700],
-                              size: 40.0,
+                              size: 40,
                             ),
                             onPressed: () {},
                           ),
@@ -108,19 +117,18 @@ class _Page1State extends State<Page1> {
                             icon: Icon(
                               Icons.add_location,
                               color: Colors.green[700],
-                              size: 40.0,
+                              size: 40,
                             ),
                             onPressed: () {},
                           ),
-                          // Spinge le icone successive tutto a destra
-                          Spacer(),
+                          const Spacer(),
                           IconButton(
                             icon: Icon(
                               _isCollapsed
                                   ? Icons.open_in_full
                                   : Icons.close_fullscreen,
                               color: Colors.green[700],
-                              size: 40.0,
+                              size: 40,
                             ),
                             tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
                             onPressed: _toggleCollapse,
@@ -128,72 +136,81 @@ class _Page1State extends State<Page1> {
                         ],
                       ),
                       /*--------------------------------------------------+
-                      |                                                   |
+                      | Lista                                             |
                       +--------------------------------------------------*/
                       Expanded(
-                        child: AnimatedContainer(
+                        child: AnimatedSwitcher(
                           duration: const Duration(milliseconds: 200),
-                          curve: Curves.easeInOut,
-                          height: _isCollapsed
-                              ? _collapsedHeight
-                              : _expandedHeight,
-                          child: StreamBuilder<QuerySnapshot>(
-                            stream: FirebaseFirestore.instance
-                                .collection('places')
-                                .snapshots(),
-                            builder: (context, snapshot) {
-                              if (snapshot.hasError) {
-                                return Center(
-                                  child: Text('Error: ${snapshot.error}'),
-                                );
-                              }
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircularProgressIndicator(),
-                                );
-                              }
-
-                              final docs = snapshot.data?.docs ?? [];
-                              if (docs.isEmpty) {
-                                return const Center(
-                                  child: Text('No places yet'),
-                                );
-                              }
-
-                              return ListView.builder(
-                                itemCount: docs.length,
-                                padding: const EdgeInsets.symmetric(
-                                  vertical: 6,
-                                ),
-                                itemBuilder: (context, index) {
-                                  final place = docs[index];
-                                  return InkWell(
-                                    borderRadius: BorderRadius.circular(12),
-                                    onTap: () {},
-                                    child: Container(
-                                      margin: const EdgeInsets.symmetric(
-                                        vertical: 6,
-                                        horizontal: 12,
-                                      ),
-                                      padding: const EdgeInsets.all(4),
-                                      decoration: BoxDecoration(
-                                        color: Colors.grey.shade200,
-                                        borderRadius: BorderRadius.circular(12),
-                                      ),
-                                      child: ListTile(
-                                        contentPadding: const EdgeInsets.all(8),
-                                        title: Text(place['name'] ?? ''),
-                                        subtitle: Text(
-                                          place['description'] ?? '',
+                          child: _isCollapsed
+                              ? const SizedBox.shrink()
+                              : StreamBuilder<QuerySnapshot>(
+                                  stream: FirebaseFirestore.instance
+                                      .collection('places')
+                                      .snapshots(),
+                                  builder: (context, snapshot) {
+                                    if (snapshot.hasError) {
+                                      return Center(
+                                        child: Text('Error: ${snapshot.error}'),
+                                      );
+                                    }
+                                    if (snapshot.connectionState ==
+                                        ConnectionState.waiting) {
+                                      return const Center(
+                                        child: CircularProgressIndicator(),
+                                      );
+                                    }
+                                    final docs = snapshot.data?.docs ?? [];
+                                    if (docs.isEmpty) {
+                                      return const Center(
+                                        child: Text('No places yet'),
+                                      );
+                                    }
+                                    return Scrollbar(
+                                      controller: _listController,
+                                      thumbVisibility: true,
+                                      radius: const Radius.circular(12),
+                                      child: ListView.builder(
+                                        controller: _listController,
+                                        padding: const EdgeInsets.symmetric(
+                                          vertical: 6,
                                         ),
+                                        itemCount: docs.length,
+                                        itemBuilder: (context, index) {
+                                          final place = docs[index];
+                                          return InkWell(
+                                            borderRadius: BorderRadius.circular(
+                                              12,
+                                            ),
+                                            onTap: () {},
+                                            child: Container(
+                                              margin:
+                                                  const EdgeInsets.symmetric(
+                                                    vertical: 6,
+                                                    horizontal: 12,
+                                                  ),
+                                              padding: const EdgeInsets.all(4),
+                                              decoration: BoxDecoration(
+                                                color: Colors.grey.shade200,
+                                                borderRadius:
+                                                    BorderRadius.circular(12),
+                                              ),
+                                              child: ListTile(
+                                                contentPadding:
+                                                    const EdgeInsets.all(8),
+                                                title: Text(
+                                                  place['name'] ?? '',
+                                                ),
+                                                subtitle: Text(
+                                                  place['description'] ?? '',
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
-                                    ),
-                                  );
-                                },
-                              );
-                            },
-                          ),
+                                    );
+                                  },
+                                ),
                         ),
                       ),
                     ],
