@@ -15,7 +15,7 @@ class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
 
   static const double _expandedHeight = 440;
-  static const double _collapsedHeight = 115;
+  static const double _collapsedHeight = 75;
 
   void _toggleCollapse() {
     setState(() {
@@ -92,16 +92,35 @@ class _Page1State extends State<Page1> {
                     mainAxisSize: MainAxisSize.min,
                     children: [
                       /*--------------------------------------------------+
-                      | Row con il pulsante espandi/riduci                |
+                      | Row con i pulsanti                                |
                       +--------------------------------------------------*/
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
+                          IconButton(
+                            icon: Icon(
+                              Icons.my_location,
+                              color: Colors.green[700],
+                              size: 40.0,
+                            ),
+                            onPressed: () {},
+                          ),
+                          IconButton(
+                            icon: Icon(
+                              Icons.add_location,
+                              color: Colors.green[700],
+                              size: 40.0,
+                            ),
+                            onPressed: () {},
+                          ),
+                          // Spinge le icone successive tutto a destra
+                          Spacer(),
                           IconButton(
                             icon: Icon(
                               _isCollapsed
                                   ? Icons.open_in_full
                                   : Icons.close_fullscreen,
+                              color: Colors.green[700],
+                              size: 40.0,
                             ),
                             tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
                             onPressed: _toggleCollapse,
