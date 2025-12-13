@@ -9,7 +9,7 @@ class Page2 extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: <Widget>[
-          Icon(Icons.settings, size: 80, color: Colors.deepPurple),
+          Icon(Icons.settings, size: 80, color: Colors.blueGrey),
           SizedBox(height: 20),
           Text(
             'Page 2',
