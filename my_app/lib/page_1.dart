@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:my_app/firestore_service.dart';
 // import 'address_row.dart';
 
 class Page1 extends StatefulWidget {
@@ -144,9 +145,7 @@ class _Page1State extends State<Page1> {
                           child: _isCollapsed
                               ? const SizedBox.shrink()
                               : StreamBuilder<QuerySnapshot>(
-                                  stream: FirebaseFirestore.instance
-                                      .collection('places')
-                                      .snapshots(),
+                                  stream: FirestoreService().getPlaces(),
                                   builder: (context, snapshot) {
                                     if (snapshot.hasError) {
                                       return Center(
