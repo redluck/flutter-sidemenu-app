@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_map/flutter_map.dart';
-import 'package:latlong2/latlong.dart';
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:my_app/firestore_service.dart';
-// import 'address_row.dart';
+import 'package:my_app/actions_row.dart';
+import 'package:my_app/home_map.dart';
+import 'package:my_app/landmarks_list.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
@@ -45,37 +43,7 @@ class _Page1State extends State<Page1> {
             /*====================================================================================================+
             | Mappa che riempie lo schermo                                                                        |
             +====================================================================================================*/
-            Positioned.fill(
-              child: FlutterMap(
-                options: MapOptions(
-                  initialCenter: LatLng(41.9028, 12.4964),
-                  initialZoom: 13,
-                ),
-                // `flutter_map` v8 uses `children` instead of the old `layers` API.
-                children: [
-                  TileLayer(
-                    urlTemplate:
-                        "https://api.maptiler.com/maps/streets-v2/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
-                    subdomains: ['a', 'b', 'c'],
-                  ),
-                  // Marker on Rome
-                  MarkerLayer(
-                    markers: [
-                      Marker(
-                        point: LatLng(41.8902, 12.4922),
-                        width: 40,
-                        height: 40,
-                        child: const Icon(
-                          Icons.location_on,
-                          color: Colors.red,
-                          size: 40,
-                        ),
-                      ),
-                    ],
-                  ),
-                ],
-              ),
-            ),
+            Positioned.fill(child: HomeMap()),
             /*====================================================================================================+
             | Div fisso sotto la mappa con comportamento collapse/expand                                          |
             +====================================================================================================*/
@@ -104,113 +72,16 @@ class _Page1State extends State<Page1> {
                       /*--------------------------------------------------+
                       | Row con i pulsanti                                |
                       +--------------------------------------------------*/
-                      Row(
-                        children: [
-                          IconButton(
-                            icon: Icon(
-                              Icons.my_location,
-                              color: Colors.green[700],
-                              size: 40,
-                            ),
-                            onPressed: () {},
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add_location,
-                              color: Colors.green[700],
-                              size: 40,
-                            ),
-                            onPressed: () {},
-                          ),
-                          const Spacer(),
-                          IconButton(
-                            icon: Icon(
-                              _isCollapsed
-                                  ? Icons.open_in_full
-                                  : Icons.close_fullscreen,
-                              color: Colors.green[700],
-                              size: 40,
-                            ),
-                            tooltip: _isCollapsed ? 'Espandi' : 'Riduci',
-                            onPressed: _toggleCollapse,
-                          ),
-                        ],
+                      ActionsRow(
+                        collapsed: _isCollapsed,
+                        onOpenClosePressed: _toggleCollapse,
                       ),
                       /*--------------------------------------------------+
                       | Lista                                             |
                       +--------------------------------------------------*/
-                      Expanded(
-                        child: AnimatedSwitcher(
-                          duration: const Duration(milliseconds: 200),
-                          child: _isCollapsed
-                              ? const SizedBox.shrink()
-                              : StreamBuilder<QuerySnapshot>(
-                                  stream: FirestoreService().getPlaces(),
-                                  builder: (context, snapshot) {
-                                    if (snapshot.hasError) {
-                                      return Center(
-                                        child: Text('Error: ${snapshot.error}'),
-                                      );
-                                    }
-                                    if (snapshot.connectionState ==
-                                        ConnectionState.waiting) {
-                                      return const Center(
-                                        child: CircularProgressIndicator(),
-                                      );
-                                    }
-                                    final docs = snapshot.data?.docs ?? [];
-                                    if (docs.isEmpty) {
-                                      return const Center(
-                                        child: Text('No places yet'),
-                                      );
-                                    }
-                                    return Scrollbar(
-                                      controller: _listController,
-                                      thumbVisibility: true,
-                                      radius: const Radius.circular(12),
-                                      child: ListView.builder(
-                                        controller: _listController,
-                                        padding: const EdgeInsets.symmetric(
-                                          vertical: 6,
-                                        ),
-                                        itemCount: docs.length,
-                                        itemBuilder: (context, index) {
-                                          final place = docs[index];
-                                          return InkWell(
-                                            borderRadius: BorderRadius.circular(
-                                              12,
-                                            ),
-                                            onTap: () {},
-                                            child: Container(
-                                              margin:
-                                                  const EdgeInsets.symmetric(
-                                                    vertical: 6,
-                                                    horizontal: 12,
-                                                  ),
-                                              padding: const EdgeInsets.all(4),
-                                              decoration: BoxDecoration(
-                                                color: Colors.grey.shade200,
-                                                borderRadius:
-                                                    BorderRadius.circular(12),
-                                              ),
-                                              child: ListTile(
-                                                contentPadding:
-                                                    const EdgeInsets.all(8),
-                                                title: Text(
-                                                  place['name'] ?? '',
-                                                ),
-                                                subtitle: Text(
-                                                  place['description'] ?? '',
-                                                ),
-                                              ),
-                                            ),
-                                          );
-                                        },
-                                      ),
-                                    );
-                                  },
-                                ),
-                        ),
+                      LandmarksList(
+                        collapsed: _isCollapsed,
+                        scrollController: _listController,
                       ),
                     ],
                   ),
