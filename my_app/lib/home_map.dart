@@ -5,7 +5,9 @@ import 'package:latlong2/latlong.dart';
 import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatelessWidget {
-  const HomeMap({super.key});
+  final VoidCallback onMarkerTap;
+
+  const HomeMap({super.key, required this.onMarkerTap});
 
   @override
   Widget build(BuildContext context) {
@@ -27,15 +29,7 @@ class HomeMap extends StatelessWidget {
             width: 40,
             height: 40,
             child: GestureDetector(
-              onTap: () {
-                showDialog(
-                  context: context,
-                  builder: (_) => AlertDialog(
-                    title: Text(data['name']),
-                    content: Text(data['description']),
-                  ),
-                );
-              },
+              onTap: onMarkerTap,
               child: const Icon(Icons.location_on, color: Colors.red, size: 40),
             ),
           );

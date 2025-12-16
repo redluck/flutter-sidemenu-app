@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:my_app/actions_row.dart';
+import 'package:my_app/detail_card.dart';
 import 'package:my_app/home_map.dart';
 import 'package:my_app/landmarks_list.dart';
 
@@ -12,6 +13,7 @@ class Page1 extends StatefulWidget {
 
 class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
+  bool _markerTapped = false;
   late final ScrollController _listController;
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
@@ -34,6 +36,13 @@ class _Page1State extends State<Page1> {
     });
   }
 
+  void _onMarkerTap() {
+    setState(() {
+      _isCollapsed = false;
+      _markerTapped = true;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +52,7 @@ class _Page1State extends State<Page1> {
             /*====================================================================================================+
             | Mappa che riempie lo schermo                                                                        |
             +====================================================================================================*/
-            Positioned.fill(child: HomeMap()),
+            Positioned.fill(child: HomeMap(onMarkerTap: _onMarkerTap)),
             /*====================================================================================================+
             | Div fisso sotto la mappa con comportamento collapse/expand                                          |
             +====================================================================================================*/
@@ -79,10 +88,18 @@ class _Page1State extends State<Page1> {
                       /*--------------------------------------------------+
                       | Lista                                             |
                       +--------------------------------------------------*/
-                      LandmarksList(
-                        collapsed: _isCollapsed,
-                        scrollController: _listController,
-                      ),
+                      !_markerTapped
+                          ? LandmarksList(
+                              collapsed: _isCollapsed,
+                              scrollController: _listController,
+                            )
+                          : DetailCard(
+                              title: 'Landmark Title',
+                              description:
+                                  'Detailed information about the landmark goes here.',
+                              collapsed: _isCollapsed,
+                              scrollController: _listController,
+                            ),
                     ],
                   ),
                 ),
