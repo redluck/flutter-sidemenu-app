@@ -47,6 +47,12 @@ class _Page1State extends State<Page1> {
     });
   }
 
+  void _onListPressed() {
+    setState(() {
+      _markerTapped = false;
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,6 +94,7 @@ class _Page1State extends State<Page1> {
                       ActionsRow(
                         collapsed: _isCollapsed,
                         onOpenClosePressed: _toggleCollapse,
+                        onListPressed: _onListPressed,
                       ),
                       /*--------------------------------------------------+
                       | Lista                                             |
