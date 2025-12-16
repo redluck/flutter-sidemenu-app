@@ -26,7 +26,18 @@ class HomeMap extends StatelessWidget {
             point: LatLng(data['latitude'], data['longitude']),
             width: 40,
             height: 40,
-            child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+            child: GestureDetector(
+              onTap: () {
+                showDialog(
+                  context: context,
+                  builder: (_) => AlertDialog(
+                    title: Text(data['name']),
+                    content: Text(data['description']),
+                  ),
+                );
+              },
+              child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+            ),
           );
         }).toList();
         /*--------------------------------------------------+
