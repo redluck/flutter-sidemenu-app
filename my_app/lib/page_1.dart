@@ -104,6 +104,9 @@ class _Page1State extends State<Page1> {
                           ? LandmarksList(
                               collapsed: _isCollapsed,
                               scrollController: _listController,
+                              onItemTap: (lat, lon) {
+                                print('Tapped item at ($lat, $lon)');
+                              },
                             )
                           : DetailCard(
                               title: _selectedTitle,

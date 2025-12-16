@@ -40,7 +40,7 @@ class HomeMap extends StatelessWidget {
         return FlutterMap(
           options: MapOptions(
             initialCenter: LatLng(41.9028, 12.4964),
-            initialZoom: 13,
+            initialZoom: 16,
           ),
           // `flutter_map` v8 uses `children` instead of the old `layers` API.
           children: [

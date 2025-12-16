@@ -5,11 +5,13 @@ import 'package:my_app/firestore_service.dart';
 class LandmarksList extends StatelessWidget {
   final bool collapsed;
   final ScrollController scrollController;
+  final void Function(num lat, num lon) onItemTap;
 
   const LandmarksList({
     super.key,
     required this.collapsed,
     required this.scrollController,
+    required this.onItemTap,
   });
 
   @override
@@ -44,7 +46,7 @@ class LandmarksList extends StatelessWidget {
                         final place = docs[index];
                         return InkWell(
                           borderRadius: BorderRadius.circular(12),
-                          onTap: () {},
+                          onTap: () => onItemTap(place['latitude'], place['longitude']),
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                               vertical: 6,
