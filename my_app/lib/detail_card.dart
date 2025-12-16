@@ -2,14 +2,12 @@ import 'package:flutter/material.dart';
 
 class DetailCard extends StatelessWidget {
   final bool collapsed;
-  final ScrollController scrollController;
   final String title;
   final String description;
 
   const DetailCard({
     super.key,
     required this.collapsed,
-    required this.scrollController,
     required this.title,
     required this.description,
   });

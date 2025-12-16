@@ -101,7 +101,6 @@ class _Page1State extends State<Page1> {
                               title: _selectedTitle,
                               description: _selectedDescription,
                               collapsed: _isCollapsed,
-                              scrollController: _listController,
                             ),
                     ],
                   ),
