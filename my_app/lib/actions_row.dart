@@ -2,12 +2,14 @@ import 'package:flutter/material.dart';
 
 class ActionsRow extends StatelessWidget {
   final bool collapsed;
+  final bool listIconVisible;
   final VoidCallback onOpenClosePressed;
   final VoidCallback onListPressed;
 
   const ActionsRow({
     super.key,
     required this.collapsed,
+    required this.listIconVisible,
     required this.onOpenClosePressed,
     required this.onListPressed,
   });
@@ -25,10 +27,10 @@ class ActionsRow extends StatelessWidget {
           onPressed: () {},
         ),
         const Spacer(),
-        IconButton(
+        listIconVisible ? IconButton(
           icon: Icon(Icons.list, color: Colors.green[700], size: 40),
           onPressed: onListPressed,
-        ),
+        ) : const SizedBox.shrink(),
         IconButton(
           icon: Icon(
             collapsed ? Icons.open_in_full : Icons.close_fullscreen,

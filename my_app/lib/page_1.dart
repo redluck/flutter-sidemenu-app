@@ -93,6 +93,7 @@ class _Page1State extends State<Page1> {
                       +--------------------------------------------------*/
                       ActionsRow(
                         collapsed: _isCollapsed,
+                        listIconVisible: _markerTapped,
                         onOpenClosePressed: _toggleCollapse,
                         onListPressed: _onListPressed,
                       ),
