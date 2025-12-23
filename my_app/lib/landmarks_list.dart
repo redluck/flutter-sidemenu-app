@@ -39,6 +39,7 @@ class LandmarksList extends StatelessWidget {
                     thumbVisibility: true,
                     radius: const Radius.circular(12),
                     child: ListView.builder(
+                      key: const PageStorageKey('landmarks_list'), // Mantiene la posizione di scroll
                       controller: scrollController,
                       padding: const EdgeInsets.symmetric(vertical: 6),
                       itemCount: docs.length,

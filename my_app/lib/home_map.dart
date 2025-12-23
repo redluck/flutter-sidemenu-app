@@ -4,10 +4,45 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:my_app/firestore_service.dart';
 
-class HomeMap extends StatelessWidget {
+class HomeMap extends StatefulWidget {
   final void Function(String name, String description) onMarkerTap;
+  final double lat;
+  final double lon;
 
-  const HomeMap({super.key, required this.onMarkerTap});
+  const HomeMap({
+    super.key,
+    required this.onMarkerTap,
+    required this.lat,
+    required this.lon,
+  });
+
+  @override
+  State<HomeMap> createState() => _HomeMapState();
+}
+
+class _HomeMapState extends State<HomeMap> {
+  final MapController _mapController = MapController();
+
+  void centerMapAndAddMarker({
+    required double latitude,
+    required double longitude,
+    double offsetKm = 0.4, // Km verso nord per centrare sopra la lista
+  }) {
+    // Costante: 1 grado di latitudine = 111 km sulla superficie terrestre
+    const kmPerDegree = 111.0;
+    final shiftedLat = latitude - (offsetKm / kmPerDegree);
+    final point = LatLng(shiftedLat, longitude);
+    _mapController.move(point, 16.0);
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (oldWidget.lat != widget.lat || oldWidget.lon != widget.lon) {
+      centerMapAndAddMarker(latitude: widget.lat, longitude: widget.lon);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -29,8 +64,9 @@ class HomeMap extends StatelessWidget {
             width: 40,
             height: 40,
             child: GestureDetector(
-              onTap: () => onMarkerTap(data['name'], data['description']),
-              child: const Icon(Icons.location_on, color: Colors.red, size: 40),
+              onTap: () =>
+                  widget.onMarkerTap(data['name'], data['description']),
+              child: const Icon(Icons.circle, color: Colors.red, size: 20),
             ),
           );
         }).toList();
@@ -38,6 +74,7 @@ class HomeMap extends StatelessWidget {
         | Mappa                                             |
         +--------------------------------------------------*/
         return FlutterMap(
+          mapController: _mapController,
           options: MapOptions(
             initialCenter: LatLng(41.9028, 12.4964),
             initialZoom: 16,

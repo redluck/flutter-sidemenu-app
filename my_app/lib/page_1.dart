@@ -16,6 +16,8 @@ class _Page1State extends State<Page1> {
   bool _markerTapped = false;
   String _selectedTitle = '';
   String _selectedDescription = '';
+  double? _selectedLat;
+  double? _selectedLon;
   late final ScrollController _listController;
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
@@ -47,9 +49,16 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void _onListPressed() {
+  void _onIconListPressed() {
     setState(() {
       _markerTapped = false;
+    });
+  }
+
+  void _onListItemPressed(double lat, double lon) {
+    setState(() {
+      _selectedLat = lat;
+      _selectedLon = lon;
     });
   }
 
@@ -62,7 +71,13 @@ class _Page1State extends State<Page1> {
             /*====================================================================================================+
             | Mappa che riempie lo schermo                                                                        |
             +====================================================================================================*/
-            Positioned.fill(child: HomeMap(onMarkerTap: _onMarkerTap)),
+            Positioned.fill(
+              child: HomeMap(
+                onMarkerTap: _onMarkerTap,
+                lat: _selectedLat ?? 41.9028,
+                lon: _selectedLon ?? 12.4964,
+              ),
+            ),
             /*====================================================================================================+
             | Div fisso sotto la mappa con comportamento collapse/expand                                          |
             +====================================================================================================*/
@@ -95,7 +110,7 @@ class _Page1State extends State<Page1> {
                         collapsed: _isCollapsed,
                         listIconVisible: _markerTapped,
                         onOpenClosePressed: _toggleCollapse,
-                        onListPressed: _onListPressed,
+                        onListPressed: _onIconListPressed,
                       ),
                       /*--------------------------------------------------+
                       | Lista                                             |
@@ -105,7 +120,10 @@ class _Page1State extends State<Page1> {
                               collapsed: _isCollapsed,
                               scrollController: _listController,
                               onItemTap: (lat, lon) {
-                                print('Tapped item at ($lat, $lon)');
+                                _onListItemPressed(
+                                  lat.toDouble(),
+                                  lon.toDouble(),
+                                );
                               },
                             )
                           : DetailCard(
