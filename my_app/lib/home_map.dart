@@ -5,15 +5,13 @@ import 'package:latlong2/latlong.dart';
 import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatefulWidget {
+  final HomeMapController controller;
   final void Function(String name, String description) onMarkerTap;
-  final double lat;
-  final double lon;
 
   const HomeMap({
     super.key,
+    required this.controller,
     required this.onMarkerTap,
-    required this.lat,
-    required this.lon,
   });
 
   @override
@@ -23,25 +21,18 @@ class HomeMap extends StatefulWidget {
 class _HomeMapState extends State<HomeMap> {
   final MapController _mapController = MapController();
 
-  void centerMapAndAddMarker({
-    required double latitude,
-    required double longitude,
-    double offsetKm = 0.4, // Km verso nord per centrare sopra la lista
-  }) {
-    // Costante: 1 grado di latitudine = 111 km sulla superficie terrestre
-    const kmPerDegree = 111.0;
-    final shiftedLat = latitude - (offsetKm / kmPerDegree);
-    final point = LatLng(shiftedLat, longitude);
-    _mapController.move(point, 16.0);
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.bind(_moveTo);
   }
 
-  @override
-  void didUpdateWidget(covariant HomeMap oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (oldWidget.lat != widget.lat || oldWidget.lon != widget.lon) {
-      centerMapAndAddMarker(latitude: widget.lat, longitude: widget.lon);
-    }
+  void _moveTo(double lat, double lon) {
+    double offsetKm = 0.4;     // Km verso nord per centrare sopra la lista
+    const kmPerDegree = 111.0; // Costante: 1 grado di latitudine = 111 km sulla superficie terrestre
+    final shiftedLat = lat - (offsetKm / kmPerDegree);
+    final point = LatLng(shiftedLat, lon);
+    _mapController.move(point, 16.0);
   }
 
   @override
@@ -79,7 +70,6 @@ class _HomeMapState extends State<HomeMap> {
             initialCenter: LatLng(41.9028, 12.4964),
             initialZoom: 16,
           ),
-          // `flutter_map` v8 uses `children` instead of the old `layers` API.
           children: [
             TileLayer(
               urlTemplate:
@@ -91,5 +81,26 @@ class _HomeMapState extends State<HomeMap> {
         );
       },
     );
+  }
+}
+
+/*====================================================================================================+
+| HomeMapController                                                                                   |
++====================================================================================================*/
+class HomeMapController {
+  // Riferimento al metodo interno della mappa (_moveTo) che effettua lo spostamento
+  // viene assegnato tramite bind() quando la mappa è pronta
+  void Function(double lat, double lon)? _move;
+
+  // Serve a collegare il controller al metodo interno della mappa (_moveTo)
+  // viene chiamato da HomeMap nello initState.
+  void bind(void Function(double lat, double lon) fn) {
+    _move = fn;
+  }
+
+  // Questo è il metodo pubblico che chiama la mappa per muovere il centro
+  // viene usato da altri widget, ad esempio la lista, senza fare setState
+  void moveTo(double lat, double lon) {
+    _move?.call(lat, lon); // Se _move non è ancora assegnato, non fa nulla
   }
 }

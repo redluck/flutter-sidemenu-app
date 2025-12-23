@@ -16,9 +16,8 @@ class _Page1State extends State<Page1> {
   bool _markerTapped = false;
   String _selectedTitle = '';
   String _selectedDescription = '';
-  double? _selectedLat;
-  double? _selectedLon;
   late final ScrollController _listController;
+  late final HomeMapController _mapController;
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
 
@@ -26,6 +25,7 @@ class _Page1State extends State<Page1> {
   void initState() {
     super.initState();
     _listController = ScrollController();
+    _mapController = HomeMapController();
   }
 
   @override
@@ -56,10 +56,7 @@ class _Page1State extends State<Page1> {
   }
 
   void _onListItemPressed(double lat, double lon) {
-    setState(() {
-      _selectedLat = lat;
-      _selectedLon = lon;
-    });
+    _mapController.moveTo(lat, lon);
   }
 
   @override
@@ -74,8 +71,7 @@ class _Page1State extends State<Page1> {
             Positioned.fill(
               child: HomeMap(
                 onMarkerTap: _onMarkerTap,
-                lat: _selectedLat ?? 41.9028,
-                lon: _selectedLon ?? 12.4964,
+                controller: _mapController,
               ),
             ),
             /*====================================================================================================+
