@@ -46,7 +46,8 @@ class LandmarksList extends StatelessWidget {
                         final place = docs[index];
                         return InkWell(
                           borderRadius: BorderRadius.circular(12),
-                          onTap: () => onItemTap(place['latitude'], place['longitude']),
+                          onTap: () =>
+                              onItemTap(place['latitude'], place['longitude']),
                           child: Container(
                             margin: const EdgeInsets.symmetric(
                               vertical: 6,
@@ -54,7 +55,9 @@ class LandmarksList extends StatelessWidget {
                             ),
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.grey.shade200,
+                              color: place['name'] == 'Colosseo'
+                                  ? Colors.blue.shade100
+                                  : Colors.grey.shade200,
                               borderRadius: BorderRadius.circular(12),
                             ),
                             child: ListTile(
