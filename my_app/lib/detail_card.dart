@@ -20,6 +20,7 @@ class DetailCard extends StatelessWidget {
       child: Card(
         color: Colors.grey.shade200,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+        margin: const EdgeInsets.all(12),
         child: SizedBox(
           width: double.infinity,
           child: Padding(
