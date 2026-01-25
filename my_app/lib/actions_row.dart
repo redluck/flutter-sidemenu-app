@@ -29,7 +29,7 @@ class ActionsRow extends StatelessWidget {
           onPressed: () {},
         ),
         const Spacer(),
-        listIconVisible ? IconButton(
+        listIconVisible && !collapsed ? IconButton(
           icon: Icon(Icons.list, color: Colors.green[700], size: 40),
           onPressed: onListPressed,
         ) : const SizedBox.shrink(),
