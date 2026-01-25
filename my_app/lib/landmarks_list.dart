@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/firestore_service.dart';
+import 'package:my_app/landmarks_list_item.dart';
 
 class LandmarksList extends StatefulWidget {
   final bool collapsed;
@@ -60,17 +61,16 @@ class _LandmarksListState extends State<LandmarksList> {
                           itemCount: docs.length,
                           itemBuilder: (context, index) {
                             final place = docs[index];
-                            final placeName = place['name'] ?? '';
-                            final isSelected = selected == placeName;
+                            final isSelected = selected == place['name'];
 
-                            return _LandmarkListItem(
-                              placeName: placeName,
+                            return LandmarksListItem(
+                              name: place['name'],
                               description: place['description'] ?? '',
                               latitude: place['latitude'],
                               longitude: place['longitude'],
                               isSelected: isSelected,
                               onTap: () {
-                                selectedPlaceName.value = placeName;
+                                selectedPlaceName.value = place['name'];
                                 widget.onItemTap(
                                   place['latitude'],
                                   place['longitude'],
@@ -84,46 +84,6 @@ class _LandmarksListState extends State<LandmarksList> {
                   );
                 },
               ),
-      ),
-    );
-  }
-}
-
-class _LandmarkListItem extends StatelessWidget {
-  final String placeName;
-  final String description;
-  final num latitude;
-  final num longitude;
-  final bool isSelected;
-  final VoidCallback onTap;
-
-  const _LandmarkListItem({
-    required this.placeName,
-    required this.description,
-    required this.latitude,
-    required this.longitude,
-    required this.isSelected,
-    required this.onTap,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return InkWell(
-      borderRadius: BorderRadius.circular(12),
-      onTap: onTap,
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 100),
-        margin: const EdgeInsets.symmetric(vertical: 6, horizontal: 12),
-        padding: const EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          color: isSelected ? Colors.blue.shade400 : Colors.grey.shade200,
-          borderRadius: BorderRadius.circular(12),
-        ),
-        child: ListTile(
-          contentPadding: const EdgeInsets.all(8),
-          title: Text(placeName),
-          subtitle: Text(description),
-        ),
       ),
     );
   }
