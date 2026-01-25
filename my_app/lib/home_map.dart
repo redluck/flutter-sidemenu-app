@@ -125,9 +125,9 @@ class _HomeMapState extends State<HomeMap> {
                   width: 40,
                   height: 40,
                   child: Icon(
-                    Icons.location_on,
+                    Icons.adjust,
                     color: Colors.blue[700],
-                    size: 25,
+                    size: 40,
                   ),
                 ),
               );
