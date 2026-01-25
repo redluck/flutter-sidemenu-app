@@ -1,7 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:my_app/firestore_service.dart';
-import 'package:my_app/landmarks_list_item.dart';
+import 'package:my_app/page_1_widgets/landmarks_list_item.dart';
 
 class LandmarksList extends StatefulWidget {
   final bool collapsed;

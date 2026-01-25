@@ -3,7 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'firebase_options.dart';
 import 'page_3.dart';
 import 'page_2.dart';
-import 'page_1.dart';
+import 'page_1_widgets/page_1.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

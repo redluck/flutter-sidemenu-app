@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:my_app/actions_row.dart';
-import 'package:my_app/detail_card.dart';
-import 'package:my_app/home_map.dart';
-import 'package:my_app/landmarks_list.dart';
+import 'package:my_app/page_1_widgets/actions_row.dart';
+import 'package:my_app/page_1_widgets/detail_card.dart';
+import 'package:my_app/page_1_widgets/home_map.dart';
+import 'package:my_app/page_1_widgets/landmarks_list.dart';
 
 class Page1 extends StatefulWidget {
   const Page1({super.key});
