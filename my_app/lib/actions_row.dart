@@ -5,6 +5,7 @@ class ActionsRow extends StatelessWidget {
   final bool listIconVisible;
   final VoidCallback onOpenClosePressed;
   final VoidCallback onListPressed;
+  final VoidCallback onMyLocationPressed;
 
   const ActionsRow({
     super.key,
@@ -12,6 +13,7 @@ class ActionsRow extends StatelessWidget {
     required this.listIconVisible,
     required this.onOpenClosePressed,
     required this.onListPressed,
+    required this.onMyLocationPressed,
   });
 
   @override
@@ -20,7 +22,7 @@ class ActionsRow extends StatelessWidget {
       children: [
         IconButton(
           icon: Icon(Icons.my_location, color: Colors.green[700], size: 40),
-          onPressed: () {},
+          onPressed: onMyLocationPressed,
         ),
         IconButton(
           icon: Icon(Icons.add_location, color: Colors.green[700], size: 40),

@@ -59,6 +59,10 @@ class _Page1State extends State<Page1> {
     _mapController.moveTo(lat, lon);
   }
 
+  Future<void> _onMyLocationPressed() async {
+    await _mapController.centerOnCurrentLocation();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,6 +111,7 @@ class _Page1State extends State<Page1> {
                         listIconVisible: _markerTapped,
                         onOpenClosePressed: _toggleCollapse,
                         onListPressed: _onIconListPressed,
+                        onMyLocationPressed: _onMyLocationPressed,
                       ),
                       /*--------------------------------------------------+
                       | Lista                                             |
