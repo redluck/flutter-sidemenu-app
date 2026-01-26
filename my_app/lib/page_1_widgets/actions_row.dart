@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../landmark_form/landmark_form.dart';
 
 class ActionsRow extends StatelessWidget {
   final bool collapsed;
@@ -26,7 +27,12 @@ class ActionsRow extends StatelessWidget {
         ),
         IconButton(
           icon: Icon(Icons.add_location, color: Colors.green[700], size: 40),
-          onPressed: () {},
+          onPressed: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const LandmarkForm()),
+            );
+          },
         ),
         const Spacer(),
         listIconVisible && !collapsed ? IconButton(
