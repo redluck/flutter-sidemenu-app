@@ -91,52 +91,43 @@ class _FormMapState extends State<FormMap> {
 
   @override
   Widget build(BuildContext context) {
-    /*--------------------------------------------------+
-    | Elenco dei markers                                |
-    +--------------------------------------------------*/
     return Stack(
       children: [
-        StreamBuilder<QuerySnapshot>(
-          stream: FirestoreService().getPlaces(),
-          builder: (context, snapshot) {
-            if (!snapshot.hasData) {
-              return const Center(child: CircularProgressIndicator());
-            }
-            /*--------------------------------------------------+
-            | Mappa                                             |
-            +--------------------------------------------------*/
-            return FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                initialCenter: LatLng(41.9028, 12.4964),
-                initialZoom: 16,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
-                  subdomains: ['a', 'b', 'c'],
-                ),
-                MarkerLayer(
-                  markers: [
-                    if (_currentLocation != null)
-                      Marker(
-                        point: _currentLocation!,
-                        width: 40,
-                        height: 40,
-                        child: Icon(
-                          Icons.adjust,
-                          color: Colors.blue[700],
-                          size: 40,
-                        ),
-                      ),
-                  ],
-                ),
+        /*--------------------------------------------------+
+        | Mappa                                             |
+        +--------------------------------------------------*/
+        FlutterMap(
+          mapController: _mapController,
+          options: MapOptions(
+            initialCenter: LatLng(41.9028, 12.4964),
+            initialZoom: 16,
+          ),
+          children: [
+            TileLayer(
+              urlTemplate:
+                  "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
+              subdomains: ['a', 'b', 'c'],
+            ),
+            MarkerLayer(
+              markers: [
+                if (_currentLocation != null)
+                  Marker(
+                    point: _currentLocation!,
+                    width: 40,
+                    height: 40,
+                    child: Icon(
+                      Icons.adjust,
+                      color: Colors.blue[700],
+                      size: 40,
+                    ),
+                  ),
               ],
-            );
-          },
+            ),
+          ],
         ),
-        // Loader di caricamento della posizione
+        /*--------------------------------------------------+
+        | Loader di caricamento della posizione             |
+        +--------------------------------------------------*/
         if (_isLoadingLocation)
           Container(
             color: Color.fromRGBO(0, 0, 0, 0.3),
