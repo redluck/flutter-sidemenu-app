@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:my_app/landmark_form/actions_row_form.dart';
+import 'package:my_app/landmark_form/form_box.dart';
 import 'package:my_app/landmark_form/form_map.dart';
 
 class LandmarkForm extends StatefulWidget {
@@ -9,6 +11,9 @@ class LandmarkForm extends StatefulWidget {
 }
 
 class _LandmarkFormState extends State<LandmarkForm> {
+  bool _isCollapsed = false;
+  static const double _expandedHeight = 440;
+  static const double _collapsedHeight = 75;
   late final FormMapController _mapController;
 
   void _onMarkerTap(String name, String description) {}
@@ -17,6 +22,16 @@ class _LandmarkFormState extends State<LandmarkForm> {
   void initState() {
     super.initState();
     _mapController = FormMapController();
+  }
+
+  void _toggleCollapse() {
+    setState(() {
+      _isCollapsed = !_isCollapsed;
+    });
+  }
+
+  Future<void> _onMyLocationPressed() async {
+    await _mapController.centerOnCurrentLocation();
   }
 
   @override
@@ -39,6 +54,48 @@ class _LandmarkFormState extends State<LandmarkForm> {
               child: FormMap(
                 onMarkerTap: _onMarkerTap,
                 controller: _mapController,
+              ),
+            ),
+            /*====================================================================================================+
+            | Div fisso sotto la mappa con comportamento collapse/expand                                          |
+            +====================================================================================================*/
+            Positioned(
+              left: 8,
+              right: 8,
+              bottom: 8,
+              child: Material(
+                elevation: 8,
+                borderRadius: BorderRadius.circular(12),
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeInOut,
+                  height: _isCollapsed ? _collapsedHeight : _expandedHeight,
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 8,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      /*--------------------------------------------------+
+                      | Row con i pulsanti                                |
+                      +--------------------------------------------------*/
+                      ActionsRowForm(
+                        collapsed: _isCollapsed,
+                        onOpenClosePressed: _toggleCollapse,
+                        onMyLocationPressed: _onMyLocationPressed,
+                      ),
+                      /*--------------------------------------------------+
+                      | Lista                                             |
+                      +--------------------------------------------------*/
+                      FormBox(collapsed: _isCollapsed),
+                    ],
+                  ),
+                ),
               ),
             ),
           ],

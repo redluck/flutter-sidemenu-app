@@ -102,34 +102,6 @@ class _FormMapState extends State<FormMap> {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
             }
-
-            /*final markers = snapshot.data!.docs.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-
-              return Marker(
-                point: LatLng(data['latitude'], data['longitude']),
-                width: 40,
-                height: 40,
-                child: GestureDetector(
-                  onTap: () =>
-                      widget.onMarkerTap(data['name'], data['description']),
-                  child: const Icon(Icons.circle, color: Colors.red, size: 20),
-                ),
-              );
-            }).toList();*/
-
-            // Aggiungere il marker della posizione corrente se disponibile
-            /*if (_currentLocation != null) {
-              markers.add(
-                Marker(
-                  point: _currentLocation!,
-                  width: 40,
-                  height: 40,
-                  child: Icon(Icons.adjust, color: Colors.blue[700], size: 40),
-                ),
-              );
-            }*/
-
             /*--------------------------------------------------+
             | Mappa                                             |
             +--------------------------------------------------*/
