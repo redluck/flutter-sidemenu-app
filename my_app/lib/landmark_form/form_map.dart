@@ -20,6 +20,7 @@ class FormMap extends StatefulWidget {
 class _FormMapState extends State<FormMap> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
+  LatLng? _tappedLocation;
   bool _isLoadingLocation = false;
 
   @override
@@ -65,10 +66,11 @@ class _FormMapState extends State<FormMap> {
         desiredAccuracy: LocationAccuracy.high,
         timeLimit: const Duration(seconds: 10),
       );
-
       final newLocation = LatLng(position.latitude, position.longitude);
+
       setState(() {
         _currentLocation = newLocation;
+        _tappedLocation = null; // Reset il marker del tap
         _isLoadingLocation = false;
       });
 
@@ -99,6 +101,11 @@ class _FormMapState extends State<FormMap> {
           options: MapOptions(
             initialCenter: LatLng(41.9028, 12.4964),
             initialZoom: 16,
+            onTap: (tapPosition, point) {
+              setState(() {
+                _tappedLocation = point;
+              });
+            },
           ),
           children: [
             TileLayer(
@@ -108,7 +115,14 @@ class _FormMapState extends State<FormMap> {
             ),
             MarkerLayer(
               markers: [
-                if (_currentLocation != null)
+                if (_tappedLocation != null)
+                  Marker(
+                    point: _tappedLocation!,
+                    width: 40,
+                    height: 40,
+                    child: Icon(Icons.circle, color: Colors.red, size: 20),
+                  )
+                else if (_currentLocation != null)
                   Marker(
                     point: _currentLocation!,
                     width: 40,
