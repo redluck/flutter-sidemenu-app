@@ -117,7 +117,21 @@ class _FormMapState extends State<FormMap> {
                       "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
                   subdomains: ['a', 'b', 'c'],
                 ),
-                //MarkerLayer(markers: markers),
+                MarkerLayer(
+                  markers: [
+                    if (_currentLocation != null)
+                      Marker(
+                        point: _currentLocation!,
+                        width: 40,
+                        height: 40,
+                        child: Icon(
+                          Icons.adjust,
+                          color: Colors.blue[700],
+                          size: 40,
+                        ),
+                      ),
+                  ],
+                ),
               ],
             );
           },
