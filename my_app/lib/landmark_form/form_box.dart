@@ -185,6 +185,9 @@ class _FormBoxState extends State<FormBox> {
                         ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
+                              final navigator = Navigator.of(context);
+                              final messenger = ScaffoldMessenger.of(context);
+                              
                               try {
                                 await _firestoreService.addPlace(
                                   name: _nameController.text,
@@ -203,7 +206,7 @@ class _FormBoxState extends State<FormBox> {
                                 _formKey.currentState?.reset();
                                 
                                 if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                messenger.showSnackBar(
                                   const SnackBar(
                                     content: Text('Landmark added successfully!'),
                                     backgroundColor: Colors.green,
@@ -212,10 +215,10 @@ class _FormBoxState extends State<FormBox> {
                                 );
                                 
                                 // Navigate back to page 1
-                                Navigator.of(context).pop();
+                                navigator.pop();
                               } catch (e) {
                                 if (!mounted) return;
-                                ScaffoldMessenger.of(context).showSnackBar(
+                                messenger.showSnackBar(
                                   SnackBar(
                                     content: Text('Error: ${e.toString()}'),
                                     backgroundColor: Colors.red,
