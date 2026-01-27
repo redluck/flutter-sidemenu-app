@@ -25,18 +25,41 @@ class DetailCard extends StatelessWidget {
           width: double.infinity,
           child: Padding(
             padding: const EdgeInsets.all(16.0),
-            child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    title,
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          title,
+                          style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                        ),
+                        SizedBox(height: 8),
+                        Text(description),
+                      ],
+                    ),
                   ),
-                  SizedBox(height: 8),
-                  Text(description),
-                ],
-              ),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    IconButton(
+                      icon: Icon(Icons.map, color: Colors.green[700], size: 40),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.edit, color: Colors.green[700], size: 40),
+                      onPressed: () {},
+                    ),
+                    IconButton(
+                      icon: Icon(Icons.delete, color: Colors.green[700], size: 40),
+                      onPressed: () {},
+                    ),
+                  ],
+                ),
+              ],
             ),
           ),
         ),
