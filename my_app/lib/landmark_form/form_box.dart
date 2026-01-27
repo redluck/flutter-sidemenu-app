@@ -3,10 +3,14 @@ import '../firestore_service.dart';
 
 class FormBox extends StatefulWidget {
   final bool collapsed;
+  final double latitude;
+  final double longitude;
 
   const FormBox({
     super.key,
     required this.collapsed,
+    required this.latitude,
+    required this.longitude,
   });
 
   @override
@@ -36,6 +40,9 @@ class _FormBoxState extends State<FormBox> {
   @override
   Widget build(BuildContext context) {
     if (widget.collapsed) return const SizedBox.shrink();
+
+    _latitudeController.text = widget.latitude.toString();
+    _longitudeController.text = widget.longitude.toString();
 
     return Expanded(
       child: Card(

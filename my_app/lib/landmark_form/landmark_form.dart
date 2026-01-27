@@ -15,8 +15,15 @@ class _LandmarkFormState extends State<LandmarkForm> {
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
   late final FormMapController _mapController;
+  double _selectedLat = 0.0;
+  double _selectedLon = 0.0;
 
-  void _onMarkerTap(String name, String description) {}
+  void _onPositionSet(double lat, double lon) {
+    setState(() {
+      _selectedLat = lat;
+      _selectedLon = lon;
+    });
+  }
 
   @override
   void initState() {
@@ -52,7 +59,7 @@ class _LandmarkFormState extends State<LandmarkForm> {
             +====================================================================================================*/
             Positioned.fill(
               child: FormMap(
-                onMarkerTap: _onMarkerTap,
+                onPositionSet: _onPositionSet,
                 controller: _mapController,
               ),
             ),
@@ -92,7 +99,7 @@ class _LandmarkFormState extends State<LandmarkForm> {
                       /*--------------------------------------------------+
                       | Form                                              |
                       +--------------------------------------------------*/
-                      FormBox(collapsed: _isCollapsed),
+                      FormBox(collapsed: _isCollapsed, latitude: _selectedLat, longitude: _selectedLon),
                     ],
                   ),
                 ),

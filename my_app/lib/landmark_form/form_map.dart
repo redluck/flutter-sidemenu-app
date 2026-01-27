@@ -5,12 +5,12 @@ import 'package:latlong2/latlong.dart';
 
 class FormMap extends StatefulWidget {
   final FormMapController controller;
-  final void Function(String name, String description) onMarkerTap;
+  final void Function(double lat, double lon) onPositionSet;
 
   const FormMap({
     super.key,
     required this.controller,
-    required this.onMarkerTap,
+    required this.onPositionSet,
   });
 
   @override
@@ -74,6 +74,8 @@ class _FormMapState extends State<FormMap> {
         _isLoadingLocation = false;
       });
 
+      widget.onPositionSet(position.latitude, position.longitude);
+
       // Centrare la mappa sulla posizione corrente
       _moveTo(position.latitude, position.longitude);
     } catch (e) {
@@ -105,6 +107,7 @@ class _FormMapState extends State<FormMap> {
               setState(() {
                 _tappedLocation = point;
               });
+              widget.onPositionSet(point.latitude, point.longitude);
             },
           ),
           children: [
