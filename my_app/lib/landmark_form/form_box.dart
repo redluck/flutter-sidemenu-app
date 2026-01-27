@@ -56,7 +56,9 @@ class _FormBoxState extends State<FormBox> {
                       style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(height: 20),
-                    // Name field (required)
+                    /*--------------------------------------------------+
+                    | Campi del form                                    |
+                    +--------------------------------------------------*/
                     TextFormField(
                       controller: _nameController,
                       decoration: InputDecoration(
@@ -74,7 +76,6 @@ class _FormBoxState extends State<FormBox> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    // Description field (optional)
                     TextFormField(
                       controller: _descriptionController,
                       decoration: InputDecoration(
@@ -87,7 +88,6 @@ class _FormBoxState extends State<FormBox> {
                       maxLines: 3,
                     ),
                     const SizedBox(height: 16),
-                    // Set field (optional)
                     TextFormField(
                       controller: _setController,
                       decoration: InputDecoration(
@@ -99,7 +99,6 @@ class _FormBoxState extends State<FormBox> {
                       ),
                     ),
                     const SizedBox(height: 16),
-                    // Latitude field (required)
                     TextFormField(
                       controller: _latitudeController,
                       decoration: InputDecoration(
@@ -121,7 +120,6 @@ class _FormBoxState extends State<FormBox> {
                       },
                     ),
                     const SizedBox(height: 16),
-                    // Longitude field (required)
                     TextFormField(
                       controller: _longitudeController,
                       decoration: InputDecoration(
@@ -143,7 +141,9 @@ class _FormBoxState extends State<FormBox> {
                       },
                     ),
                     const SizedBox(height: 24),
-                    // Buttons
+                    /*--------------------------------------------------+
+                    | Riga con i bottoni                                |
+                    +--------------------------------------------------*/
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
