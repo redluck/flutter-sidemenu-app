@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class FormBox extends StatelessWidget {
+class FormBox extends StatefulWidget {
   final bool collapsed;
 
   const FormBox({
@@ -9,8 +9,31 @@ class FormBox extends StatelessWidget {
   });
 
   @override
+  State<FormBox> createState() => _FormBoxState();
+}
+
+class _FormBoxState extends State<FormBox> {
+  final _formKey = GlobalKey<FormState>();
+  
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _descriptionController = TextEditingController();
+  final TextEditingController _setController = TextEditingController();
+  final TextEditingController _latitudeController = TextEditingController();
+  final TextEditingController _longitudeController = TextEditingController();
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _descriptionController.dispose();
+    _setController.dispose();
+    _latitudeController.dispose();
+    _longitudeController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    if (collapsed) return const SizedBox.shrink();
+    if (widget.collapsed) return const SizedBox.shrink();
 
     return Expanded(
       child: Card(
@@ -22,14 +45,104 @@ class FormBox extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.all(16.0),
             child: SingleChildScrollView(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    "Form fields",
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                  ),
-                ],
+              child: Form(
+                key: _formKey,
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Landmark Details",
+                      style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                    ),
+                    const SizedBox(height: 20),
+                    // Name field (required)
+                    TextFormField(
+                      controller: _nameController,
+                      decoration: InputDecoration(
+                        labelText: "Name *",
+                        hintText: "Enter landmark name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Name is required";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Description field (optional)
+                    TextFormField(
+                      controller: _descriptionController,
+                      decoration: InputDecoration(
+                        labelText: "Description",
+                        hintText: "Enter landmark description",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      maxLines: 3,
+                    ),
+                    const SizedBox(height: 16),
+                    // Set field (optional)
+                    TextFormField(
+                      controller: _setController,
+                      decoration: InputDecoration(
+                        labelText: "Set",
+                        hintText: "Enter set name",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                    ),
+                    const SizedBox(height: 16),
+                    // Latitude field (required)
+                    TextFormField(
+                      controller: _latitudeController,
+                      decoration: InputDecoration(
+                        labelText: "Latitude *",
+                        hintText: "Enter latitude",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Latitude is required";
+                        }
+                        if (double.tryParse(value) == null) {
+                          return "Please enter a valid number";
+                        }
+                        return null;
+                      },
+                    ),
+                    const SizedBox(height: 16),
+                    // Longitude field (required)
+                    TextFormField(
+                      controller: _longitudeController,
+                      decoration: InputDecoration(
+                        labelText: "Longitude *",
+                        hintText: "Enter longitude",
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                        ),
+                      ),
+                      keyboardType: const TextInputType.numberWithOptions(signed: true, decimal: true),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return "Longitude is required";
+                        }
+                        if (double.tryParse(value) == null) {
+                          return "Please enter a valid number";
+                        }
+                        return null;
+                      },
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
