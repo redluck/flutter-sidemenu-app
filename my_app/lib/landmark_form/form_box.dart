@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import '../firestore_service.dart';
 
 class FormBox extends StatefulWidget {
   final bool collapsed;
@@ -14,6 +15,7 @@ class FormBox extends StatefulWidget {
 
 class _FormBoxState extends State<FormBox> {
   final _formKey = GlobalKey<FormState>();
+  final _firestoreService = FirestoreService();
   
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
@@ -172,15 +174,43 @@ class _FormBoxState extends State<FormBox> {
                           ),
                         ),
                         ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              // Handle submit
-                              print("Form submitted!");
-                              print("Name: ${_nameController.text}");
-                              print("Description: ${_descriptionController.text}");
-                              print("Set: ${_setController.text}");
-                              print("Latitude: ${_latitudeController.text}");
-                              print("Longitude: ${_longitudeController.text}");
+                              try {
+                                await _firestoreService.addPlace(
+                                  name: _nameController.text,
+                                  description: _descriptionController.text,
+                                  set: _setController.text,
+                                  latitude: double.parse(_latitudeController.text),
+                                  longitude: double.parse(_longitudeController.text),
+                                );
+                                
+                                // Clear form and show success message
+                                _nameController.clear();
+                                _descriptionController.clear();
+                                _setController.clear();
+                                _latitudeController.clear();
+                                _longitudeController.clear();
+                                _formKey.currentState?.reset();
+                                
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    const SnackBar(
+                                      content: Text('Landmark added successfully!'),
+                                      backgroundColor: Colors.green,
+                                    ),
+                                  );
+                                }
+                              } catch (e) {
+                                if (mounted) {
+                                  ScaffoldMessenger.of(context).showSnackBar(
+                                    SnackBar(
+                                      content: Text('Error: ${e.toString()}'),
+                                      backgroundColor: Colors.red,
+                                    ),
+                                  );
+                                }
+                              }
                             }
                           },
                           style: ElevatedButton.styleFrom(
