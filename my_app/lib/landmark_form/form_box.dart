@@ -141,6 +141,64 @@ class _FormBoxState extends State<FormBox> {
                         return null;
                       },
                     ),
+                    const SizedBox(height: 24),
+                    // Buttons
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        ElevatedButton(
+                          onPressed: () {
+                            _nameController.clear();
+                            _descriptionController.clear();
+                            _setController.clear();
+                            _latitudeController.clear();
+                            _longitudeController.clear();
+                            _formKey.currentState?.reset();
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.grey,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            "Cancel",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              // Handle submit
+                              print("Form submitted!");
+                              print("Name: ${_nameController.text}");
+                              print("Description: ${_descriptionController.text}");
+                              print("Set: ${_setController.text}");
+                              print("Latitude: ${_latitudeController.text}");
+                              print("Longitude: ${_longitudeController.text}");
+                            }
+                          },
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.blue,
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 24,
+                              vertical: 12,
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                          ),
+                          child: const Text(
+                            "Submit",
+                            style: TextStyle(color: Colors.white),
+                          ),
+                        ),
+                      ],
+                    ),
                   ],
                 ),
               ),
