@@ -15,8 +15,8 @@ class _LandmarkFormState extends State<LandmarkForm> {
   static const double _expandedHeight = 440;
   static const double _collapsedHeight = 75;
   late final FormMapController _mapController;
-  double _selectedLat = 0.0;
-  double _selectedLon = 0.0;
+  double? _selectedLat;
+  double? _selectedLon;
 
   void _onPositionSet(double lat, double lon) {
     setState(() {
