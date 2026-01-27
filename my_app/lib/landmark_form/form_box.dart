@@ -110,6 +110,7 @@ class _FormBoxState extends State<FormBox> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _latitudeController,
+                      enabled: false,
                       decoration: InputDecoration(
                         labelText: "Latitude *",
                         hintText: "Enter latitude",
@@ -131,6 +132,7 @@ class _FormBoxState extends State<FormBox> {
                     const SizedBox(height: 16),
                     TextFormField(
                       controller: _longitudeController,
+                      enabled: false,
                       decoration: InputDecoration(
                         labelText: "Longitude *",
                         hintText: "Enter longitude",
