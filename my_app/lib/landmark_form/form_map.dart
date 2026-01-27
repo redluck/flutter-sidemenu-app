@@ -103,6 +103,10 @@ class _FormMapState extends State<FormMap> {
           options: MapOptions(
             initialCenter: LatLng(41.9028, 12.4964),
             initialZoom: 16,
+            // Rimosso il delay per il tap
+            interactionOptions: const InteractionOptions(
+              flags: InteractiveFlag.all & ~InteractiveFlag.doubleTapZoom,
+            ),
             onTap: (tapPosition, point) {
               setState(() {
                 _tappedLocation = point;
