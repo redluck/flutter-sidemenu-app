@@ -42,22 +42,29 @@ class DetailCard extends StatelessWidget {
                     ),
                   ),
                 ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    IconButton(
-                      icon: Icon(Icons.map, color: Colors.green[700], size: 40),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.edit, color: Colors.green[700], size: 40),
-                      onPressed: () {},
-                    ),
-                    IconButton(
-                      icon: Icon(Icons.delete, color: Colors.green[700], size: 40),
-                      onPressed: () {},
-                    ),
-                  ],
+                Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey.shade400,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      IconButton(
+                        icon: Icon(Icons.map, color: Colors.green[700], size: 40),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.edit, color: Colors.green[700], size: 40),
+                        onPressed: () {},
+                      ),
+                      IconButton(
+                        icon: Icon(Icons.delete, color: Colors.green[700], size: 40),
+                        onPressed: () {},
+                      ),
+                    ],
+                  ),
                 ),
               ],
             ),
