@@ -41,8 +41,8 @@ class _FormBoxState extends State<FormBox> {
   Widget build(BuildContext context) {
     if (widget.collapsed) return const SizedBox.shrink();
 
-    _latitudeController.text = widget.latitude.toString();
-    _longitudeController.text = widget.longitude.toString();
+    _latitudeController.text = widget.latitude.toStringAsFixed(6);
+    _longitudeController.text = widget.longitude.toStringAsFixed(6);
 
     return Expanded(
       child: Card(
