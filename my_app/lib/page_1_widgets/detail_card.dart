@@ -71,9 +71,14 @@ class DetailCard extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.green[700], size: 40),
                         onPressed: () async {
+                          final messenger = ScaffoldMessenger.of(context);
+                          
                           final confirmed = await showDialog<bool>(
                             context: context,
                             builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
                               title: const Text('Conferma eliminazione'),
                               content: Text('Vuoi eliminare "$title"?'),
                               actions: [
@@ -90,8 +95,27 @@ class DetailCard extends StatelessWidget {
                           );
 
                           if (confirmed == true) {
-                            await FirestoreService().deletePlace(placeId);
-                            onDelete();
+                            try {
+                              await FirestoreService().deletePlace(placeId);
+                              
+                              messenger.showSnackBar(
+                                const SnackBar(
+                                  content: Text('Landmark eliminato con successo!'),
+                                  backgroundColor: Colors.green,
+                                  duration: Duration(seconds: 5),
+                                ),
+                              );
+                              
+                              onDelete();
+                            } catch (e) {
+                              messenger.showSnackBar(
+                                SnackBar(
+                                  content: Text('Errore durante l\'eliminazione: ${e.toString()}'),
+                                  backgroundColor: Colors.red,
+                                  duration: Duration(seconds: 5),
+                                ),
+                              );
+                            }
                           }
                         },
                       ),
