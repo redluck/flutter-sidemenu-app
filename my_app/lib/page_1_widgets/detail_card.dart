@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import '../firestore_service.dart';
 
 class DetailCard extends StatelessWidget {
   final bool collapsed;
   final String title;
   final String description;
+  final String placeId;
 
   const DetailCard({
     super.key,
     required this.collapsed,
     required this.title,
     required this.description,
+    required this.placeId,
   });
 
   @override
@@ -65,7 +68,29 @@ class DetailCard extends StatelessWidget {
                       ),
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.green[700], size: 40),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              title: const Text('Conferma eliminazione'),
+                              content: Text('Vuoi eliminare "$title"?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                  child: const Text('Annulla'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  child: const Text('Elimina'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirmed == true) {
+                            await FirestoreService().deletePlace(placeId);
+                          }
+                        },
                       ),
                     ],
                   ),

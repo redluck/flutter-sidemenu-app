@@ -7,7 +7,7 @@ import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
-  final void Function(String name, String description) onMarkerTap;
+  final void Function(String id, String name, String description) onMarkerTap;
 
   const HomeMap({
     super.key,
@@ -113,7 +113,7 @@ class _HomeMapState extends State<HomeMap> {
                 height: 40,
                 child: GestureDetector(
                   onTap: () =>
-                      widget.onMarkerTap(data['name'], data['description']),
+                      widget.onMarkerTap(doc.id, data['name'], data['description']),
                   child: const Icon(Icons.circle, color: Colors.red, size: 20),
                 ),
               );

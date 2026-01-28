@@ -22,4 +22,8 @@ class FirestoreService {
       'set': set ?? '',
     });
   }
+
+  Future<void> deletePlace(String placeId) {
+    return _firestore.collection('places').doc(placeId).delete();
+  }
 }

@@ -14,6 +14,7 @@ class Page1 extends StatefulWidget {
 class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
   bool _markerTapped = false;
+  String _selectedId = '';
   String _selectedTitle = '';
   String _selectedDescription = '';
   late final ScrollController _listController;
@@ -40,8 +41,9 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void _onMarkerTap(String name, String description) {
+  void _onMarkerTap(String id, String name, String description) {
     setState(() {
+      _selectedId = id;
       _selectedTitle = name;
       _selectedDescription = description;
       _isCollapsed = false;
@@ -128,6 +130,7 @@ class _Page1State extends State<Page1> {
                               },
                             )
                           : DetailCard(
+                              placeId: _selectedId,
                               title: _selectedTitle,
                               description: _selectedDescription,
                               collapsed: _isCollapsed,
