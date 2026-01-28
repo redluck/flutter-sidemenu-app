@@ -17,6 +17,8 @@ class _Page1State extends State<Page1> {
   String _selectedId = '';
   String _selectedTitle = '';
   String _selectedDescription = '';
+  double _selectedLatitude = 0.0;
+  double _selectedLongitude = 0.0;
   late final ScrollController _listController;
   late final HomeMapController _mapController;
   static const double _expandedHeight = 440;
@@ -41,11 +43,13 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void _onMarkerTap(String id, String name, String description) {
+  void _onMarkerTap(String id, String name, String description, double latitude, double longitude) {
     setState(() {
       _selectedId = id;
       _selectedTitle = name;
       _selectedDescription = description;
+      _selectedLatitude = latitude;
+      _selectedLongitude = longitude;
       _isCollapsed = false;
       _markerTapped = true;
     });
@@ -133,6 +137,8 @@ class _Page1State extends State<Page1> {
                               placeId: _selectedId,
                               title: _selectedTitle,
                               description: _selectedDescription,
+                              latitude: _selectedLatitude,
+                              longitude: _selectedLongitude,
                               collapsed: _isCollapsed,
                               onDelete: _onIconListPressed,
                             ),

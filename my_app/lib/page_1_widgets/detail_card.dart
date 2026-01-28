@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../firestore_service.dart';
 
 class DetailCard extends StatelessWidget {
@@ -6,6 +7,8 @@ class DetailCard extends StatelessWidget {
   final String title;
   final String description;
   final String placeId;
+  final double latitude;
+  final double longitude;
   final VoidCallback onDelete;
 
   const DetailCard({
@@ -14,6 +17,8 @@ class DetailCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.placeId,
+    required this.latitude,
+    required this.longitude,
     required this.onDelete,
   });
 
@@ -62,7 +67,15 @@ class DetailCard extends StatelessWidget {
                     children: [
                       IconButton(
                         icon: Icon(Icons.map, color: Colors.green[700], size: 40),
-                        onPressed: () {},
+                        onPressed: () async {
+                          final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+                          try {
+                            await launchUrl(url, mode: LaunchMode.externalApplication);
+                          } catch (e) {
+                            // Fallback per web o errori
+                            await launchUrl(url);
+                          }
+                        },
                       ),
                       IconButton(
                         icon: Icon(Icons.edit, color: Colors.green[700], size: 40),
