@@ -68,12 +68,35 @@ class DetailCard extends StatelessWidget {
                       IconButton(
                         icon: Icon(Icons.map, color: Colors.green[700], size: 40),
                         onPressed: () async {
-                          final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
-                          try {
-                            await launchUrl(url, mode: LaunchMode.externalApplication);
-                          } catch (e) {
-                            // Fallback per web o errori
-                            await launchUrl(url);
+                          final confirmed = await showDialog<bool>(
+                            context: context,
+                            builder: (context) => AlertDialog(
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12),
+                              ),
+                              title: const Text('Apri Google Maps'),
+                              content: const Text('Vuoi aprire questo luogo su Google Maps?'),
+                              actions: [
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(false),
+                                  child: const Text('Annulla'),
+                                ),
+                                TextButton(
+                                  onPressed: () => Navigator.of(context).pop(true),
+                                  child: const Text('Apri'),
+                                ),
+                              ],
+                            ),
+                          );
+
+                          if (confirmed == true) {
+                            final url = Uri.parse('https://www.google.com/maps/search/?api=1&query=$latitude,$longitude');
+                            try {
+                              await launchUrl(url, mode: LaunchMode.externalApplication);
+                            } catch (e) {
+                              // Fallback per web o errori
+                              await launchUrl(url);
+                            }
                           }
                         },
                       ),
