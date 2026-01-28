@@ -54,6 +54,7 @@ class _HomeMapState extends State<HomeMap> {
               const SnackBar(
                 content: Text('Permesso di localizzazione negato'),
                 backgroundColor: Colors.red,
+                duration: Duration(seconds: 5),
               ),
             );
           }
@@ -82,6 +83,7 @@ class _HomeMapState extends State<HomeMap> {
           SnackBar(
             content: Text('Errore nella localizzazione: $e'),
             backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
           ),
         );
       }

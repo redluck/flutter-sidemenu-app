@@ -210,7 +210,7 @@ class _FormBoxState extends State<FormBox> {
                                   const SnackBar(
                                     content: Text('Landmark added successfully!'),
                                     backgroundColor: Colors.green,
-                                    duration: Duration(seconds: 2),
+                                    duration: Duration(seconds: 5),
                                   ),
                                 );
                                 
@@ -222,6 +222,7 @@ class _FormBoxState extends State<FormBox> {
                                   SnackBar(
                                     content: Text('Error: ${e.toString()}'),
                                     backgroundColor: Colors.red,
+                                    duration: Duration(seconds: 5),
                                   ),
                                 );
                               }

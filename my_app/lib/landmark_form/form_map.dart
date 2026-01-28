@@ -54,6 +54,7 @@ class _FormMapState extends State<FormMap> {
               const SnackBar(
                 content: Text('Permesso di localizzazione negato'),
                 backgroundColor: Colors.red,
+                duration: Duration(seconds: 5),
               ),
             );
           }
@@ -85,6 +86,7 @@ class _FormMapState extends State<FormMap> {
           SnackBar(
             content: Text('Errore nella localizzazione: $e'),
             backgroundColor: Colors.red,
+            duration: Duration(seconds: 5),
           ),
         );
       }
