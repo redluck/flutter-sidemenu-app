@@ -6,6 +6,7 @@ class DetailCard extends StatelessWidget {
   final String title;
   final String description;
   final String placeId;
+  final VoidCallback onDelete;
 
   const DetailCard({
     super.key,
@@ -13,6 +14,7 @@ class DetailCard extends StatelessWidget {
     required this.title,
     required this.description,
     required this.placeId,
+    required this.onDelete,
   });
 
   @override
@@ -89,6 +91,7 @@ class DetailCard extends StatelessWidget {
 
                           if (confirmed == true) {
                             await FirestoreService().deletePlace(placeId);
+                            onDelete();
                           }
                         },
                       ),
