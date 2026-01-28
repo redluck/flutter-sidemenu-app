@@ -197,6 +197,26 @@ class _HomeMapState extends State<HomeMap> {
             ),
           ),
         ),
+        // Messaggio di istruzione
+        Positioned(
+          top: 24,
+          left: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+            decoration: BoxDecoration(
+              color: Colors.blue.withValues(alpha: 0.8),
+              borderRadius: BorderRadius.circular(8),
+            ),
+            child: const Text(
+              'Clicca su un marker per vedere i dettagli',
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+          ),
+        ),
       ],
     );
   }
