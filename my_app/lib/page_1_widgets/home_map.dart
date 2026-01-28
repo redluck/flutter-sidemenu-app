@@ -179,6 +179,19 @@ class _HomeMapState extends State<HomeMap> {
               ),
             ),
           ),
+        // Attribuzione mappa
+        Positioned(
+          top: 0,
+          left: 0,
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 2),
+            color: Colors.white.withValues(alpha: 0.8),
+            child: const Text(
+              '© MapTiler © OpenStreetMap contributors',
+              style: TextStyle(fontSize: 12, color: Colors.black),
+            ),
+          ),
+        ),
       ],
     );
   }
