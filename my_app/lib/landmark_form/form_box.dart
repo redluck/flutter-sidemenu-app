@@ -197,32 +197,8 @@ class _FormBoxState extends State<FormBox> {
                     | Riga con i bottoni                                |
                     +--------------------------------------------------*/
                       Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.end,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              _nameController.clear();
-                              _descriptionController.clear();
-                              _setController.clear();
-                              _latitudeController.clear();
-                              _longitudeController.clear();
-                              _formKey.currentState?.reset();
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.grey,
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 24,
-                                vertical: 12,
-                              ),
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(8),
-                              ),
-                            ),
-                            child: const Text(
-                              "Cancel",
-                              style: TextStyle(color: Colors.white),
-                            ),
-                          ),
                           ElevatedButton(
                             onPressed: () async {
                               if (_formKey.currentState!.validate()) {
