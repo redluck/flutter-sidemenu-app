@@ -82,6 +82,8 @@ class _LandmarkFormState extends State<LandmarkForm> {
               child: FormMap(
                 onPositionSet: _onPositionSet,
                 controller: _mapController,
+                initialLatitude: widget.initialLatitude,
+                initialLongitude: widget.initialLongitude,
               ),
             ),
             /*====================================================================================================+

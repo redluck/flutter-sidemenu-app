@@ -6,11 +6,15 @@ import 'package:latlong2/latlong.dart';
 class FormMap extends StatefulWidget {
   final FormMapController controller;
   final void Function(double lat, double lon) onPositionSet;
+  final double? initialLatitude;
+  final double? initialLongitude;
 
   const FormMap({
     super.key,
     required this.controller,
     required this.onPositionSet,
+    this.initialLatitude,
+    this.initialLongitude,
   });
 
   @override
@@ -28,6 +32,18 @@ class _FormMapState extends State<FormMap> {
     super.initState();
     widget.controller.bind(_moveTo);
     widget.controller.bindCurrentLocation(_centerOnCurrentLocation);
+    
+    // Se ci sono coordinate iniziali, imposta il marker
+    if (widget.initialLatitude != null && widget.initialLongitude != null) {
+      _tappedLocation = LatLng(widget.initialLatitude!, widget.initialLongitude!);
+      
+      // Chiama onPositionSet dopo che il build è completato per evitare setState durante il build
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        if (mounted) {
+          widget.onPositionSet(widget.initialLatitude!, widget.initialLongitude!);
+        }
+      });
+    }
   }
 
   void _moveTo(double lat, double lon) {
@@ -95,6 +111,17 @@ class _FormMapState extends State<FormMap> {
 
   @override
   Widget build(BuildContext context) {
+    // Determina il centro iniziale della mappa con offset
+    LatLng initialCenter;
+    if (widget.initialLatitude != null && widget.initialLongitude != null) {
+      double offsetKm = 0.4; // Km verso nord per centrare sopra il form
+      const kmPerDegree = 111.0;
+      final shiftedLat = widget.initialLatitude! - (offsetKm / kmPerDegree);
+      initialCenter = LatLng(shiftedLat, widget.initialLongitude!);
+    } else {
+      initialCenter = LatLng(41.9028, 12.4964); // Default: Roma
+    }
+    
     return Stack(
       children: [
         /*--------------------------------------------------+
@@ -103,7 +130,7 @@ class _FormMapState extends State<FormMap> {
         FlutterMap(
           mapController: _mapController,
           options: MapOptions(
-            initialCenter: LatLng(41.9028, 12.4964),
+            initialCenter: initialCenter,
             initialZoom: 16,
             // Rimosso il delay per il tap
             interactionOptions: const InteractionOptions(
