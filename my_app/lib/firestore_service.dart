@@ -26,4 +26,21 @@ class FirestoreService {
   Future<void> deletePlace(String placeId) {
     return _firestore.collection('places').doc(placeId).delete();
   }
+
+  Future<void> updatePlace({
+    required String placeId,
+    required String name,
+    required double latitude,
+    required double longitude,
+    String? description,
+    String? set,
+  }) {
+    return _firestore.collection('places').doc(placeId).update({
+      'name': name,
+      'latitude': latitude,
+      'longitude': longitude,
+      'description': description ?? '',
+      'set': set ?? '',
+    });
+  }
 }

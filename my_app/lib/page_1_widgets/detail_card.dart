@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../firestore_service.dart';
+import '../landmark_form/landmark_form.dart';
 
 class DetailCard extends StatelessWidget {
   final bool collapsed;
   final String title;
   final String description;
+  final String set;
   final String placeId;
   final double latitude;
   final double longitude;
@@ -16,6 +18,7 @@ class DetailCard extends StatelessWidget {
     required this.collapsed,
     required this.title,
     required this.description,
+    required this.set,
     required this.placeId,
     required this.latitude,
     required this.longitude,
@@ -102,7 +105,20 @@ class DetailCard extends StatelessWidget {
                       ),
                       IconButton(
                         icon: Icon(Icons.edit, color: Colors.green[700], size: 40),
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => LandmarkForm(
+                                placeId: placeId,
+                                initialName: title,
+                                initialDescription: description,
+                                initialSet: set,
+                                initialLatitude: latitude,
+                                initialLongitude: longitude,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                       IconButton(
                         icon: Icon(Icons.delete, color: Colors.green[700], size: 40),

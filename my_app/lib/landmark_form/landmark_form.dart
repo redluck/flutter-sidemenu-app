@@ -4,7 +4,22 @@ import 'package:my_app/landmark_form/form_box.dart';
 import 'package:my_app/landmark_form/form_map.dart';
 
 class LandmarkForm extends StatefulWidget {
-  const LandmarkForm({super.key});
+  final String? placeId;
+  final String? initialName;
+  final String? initialDescription;
+  final String? initialSet;
+  final double? initialLatitude;
+  final double? initialLongitude;
+
+  const LandmarkForm({
+    super.key,
+    this.placeId,
+    this.initialName,
+    this.initialDescription,
+    this.initialSet,
+    this.initialLatitude,
+    this.initialLongitude,
+  });
 
   @override
   State<LandmarkForm> createState() => _LandmarkFormState();
@@ -29,6 +44,12 @@ class _LandmarkFormState extends State<LandmarkForm> {
   void initState() {
     super.initState();
     _mapController = FormMapController();
+    
+    // Se ci sono coordinate iniziali, usa quelle
+    if (widget.initialLatitude != null && widget.initialLongitude != null) {
+      _selectedLat = widget.initialLatitude;
+      _selectedLon = widget.initialLongitude;
+    }
   }
 
   void _toggleCollapse() {
@@ -99,7 +120,15 @@ class _LandmarkFormState extends State<LandmarkForm> {
                       /*--------------------------------------------------+
                       | Form                                              |
                       +--------------------------------------------------*/
-                      FormBox(collapsed: _isCollapsed, latitude: _selectedLat, longitude: _selectedLon),
+                      FormBox(
+                        collapsed: _isCollapsed,
+                        latitude: _selectedLat,
+                        longitude: _selectedLon,
+                        placeId: widget.placeId,
+                        initialName: widget.initialName,
+                        initialDescription: widget.initialDescription,
+                        initialSet: widget.initialSet,
+                      ),
                     ],
                   ),
                 ),

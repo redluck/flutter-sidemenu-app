@@ -7,7 +7,7 @@ import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
-  final void Function(String id, String name, String description, double latitude, double longitude) onMarkerTap;
+  final void Function(String id, String name, String description, String set, double latitude, double longitude) onMarkerTap;
 
   const HomeMap({
     super.key,
@@ -116,6 +116,7 @@ class _HomeMapState extends State<HomeMap> {
                     doc.id, 
                     data['name'], 
                     data['description'],
+                    data['set'] ?? '',
                     data['latitude'],
                     data['longitude'],
                   ),

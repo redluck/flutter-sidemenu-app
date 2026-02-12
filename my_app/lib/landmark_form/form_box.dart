@@ -5,12 +5,20 @@ class FormBox extends StatefulWidget {
   final bool collapsed;
   final double? latitude;
   final double? longitude;
+  final String? placeId;
+  final String? initialName;
+  final String? initialDescription;
+  final String? initialSet;
 
   const FormBox({
     super.key,
     required this.collapsed,
     required this.latitude,
     required this.longitude,
+    this.placeId,
+    this.initialName,
+    this.initialDescription,
+    this.initialSet,
   });
 
   @override
@@ -27,6 +35,21 @@ class _FormBoxState extends State<FormBox> {
   final TextEditingController _setController = TextEditingController();
   final TextEditingController _latitudeController = TextEditingController();
   final TextEditingController _longitudeController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    // Popola i controller con i valori iniziali se presenti
+    if (widget.initialName != null) {
+      _nameController.text = widget.initialName!;
+    }
+    if (widget.initialDescription != null) {
+      _descriptionController.text = widget.initialDescription!;
+    }
+    if (widget.initialSet != null) {
+      _setController.text = widget.initialSet!;
+    }
+  }
 
   @override
   void dispose() {
@@ -207,39 +230,70 @@ class _FormBoxState extends State<FormBox> {
                                 final messenger = ScaffoldMessenger.of(context);
 
                                 try {
-                                  await _firestoreService.addPlace(
-                                    name: _nameController.text,
-                                    description: _descriptionController.text,
-                                    set: _setController.text,
-                                    latitude: double.parse(
-                                      _latitudeController.text,
-                                    ),
-                                    longitude: double.parse(
-                                      _longitudeController.text,
-                                    ),
-                                  );
-
-                                  // Clear form and show success message
-                                  _nameController.clear();
-                                  _descriptionController.clear();
-                                  _setController.clear();
-                                  _latitudeController.clear();
-                                  _longitudeController.clear();
-                                  _formKey.currentState?.reset();
-
-                                  if (!mounted) return;
-                                  messenger.showSnackBar(
-                                    const SnackBar(
-                                      content: Text(
-                                        'Landmark added successfully!',
+                                  if (widget.placeId != null) {
+                                    // Aggiorna landmark esistente
+                                    await _firestoreService.updatePlace(
+                                      placeId: widget.placeId!,
+                                      name: _nameController.text,
+                                      description: _descriptionController.text,
+                                      set: _setController.text,
+                                      latitude: double.parse(
+                                        _latitudeController.text,
                                       ),
-                                      backgroundColor: Colors.green,
-                                      duration: Duration(seconds: 5),
-                                    ),
-                                  );
+                                      longitude: double.parse(
+                                        _longitudeController.text,
+                                      ),
+                                    );
 
-                                  // Navigate back to page 1
-                                  navigator.pop();
+                                    if (!mounted) return;
+                                    messenger.showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Landmark updated successfully!',
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(seconds: 5),
+                                      ),
+                                    );
+
+                                    // Navigate back to page 1
+                                    navigator.pop();
+                                  } else {
+                                    // Aggiungi nuovo landmark
+                                    await _firestoreService.addPlace(
+                                      name: _nameController.text,
+                                      description: _descriptionController.text,
+                                      set: _setController.text,
+                                      latitude: double.parse(
+                                        _latitudeController.text,
+                                      ),
+                                      longitude: double.parse(
+                                        _longitudeController.text,
+                                      ),
+                                    );
+
+                                    // Clear form and show success message
+                                    _nameController.clear();
+                                    _descriptionController.clear();
+                                    _setController.clear();
+                                    _latitudeController.clear();
+                                    _longitudeController.clear();
+                                    _formKey.currentState?.reset();
+
+                                    if (!mounted) return;
+                                    messenger.showSnackBar(
+                                      const SnackBar(
+                                        content: Text(
+                                          'Landmark added successfully!',
+                                        ),
+                                        backgroundColor: Colors.green,
+                                        duration: Duration(seconds: 5),
+                                      ),
+                                    );
+
+                                    // Navigate back to page 1
+                                    navigator.pop();
+                                  }
                                 } catch (e) {
                                   if (!mounted) return;
                                   messenger.showSnackBar(

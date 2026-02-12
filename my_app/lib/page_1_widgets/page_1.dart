@@ -17,6 +17,7 @@ class _Page1State extends State<Page1> {
   String _selectedId = '';
   String _selectedTitle = '';
   String _selectedDescription = '';
+  String _selectedSet = '';
   double _selectedLatitude = 0.0;
   double _selectedLongitude = 0.0;
   late final ScrollController _listController;
@@ -43,11 +44,12 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void _onMarkerTap(String id, String name, String description, double latitude, double longitude) {
+  void _onMarkerTap(String id, String name, String description, String set, double latitude, double longitude) {
     setState(() {
       _selectedId = id;
       _selectedTitle = name;
       _selectedDescription = description;
+      _selectedSet = set;
       _selectedLatitude = latitude;
       _selectedLongitude = longitude;
       _isCollapsed = false;
@@ -137,6 +139,7 @@ class _Page1State extends State<Page1> {
                               placeId: _selectedId,
                               title: _selectedTitle,
                               description: _selectedDescription,
+                              set: _selectedSet,
                               latitude: _selectedLatitude,
                               longitude: _selectedLongitude,
                               collapsed: _isCollapsed,
