@@ -8,11 +8,13 @@ import 'package:my_app/firestore_service.dart';
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
   final void Function(String id, String name, String description, String set, double latitude, double longitude) onMarkerTap;
+  final String selectedPlaceId;
 
   const HomeMap({
     super.key,
     required this.controller,
     required this.onMarkerTap,
+    required this.selectedPlaceId,
   });
 
   @override
@@ -106,6 +108,7 @@ class _HomeMapState extends State<HomeMap> {
 
             final markers = snapshot.data!.docs.map((doc) {
               final data = doc.data() as Map<String, dynamic>;
+              final isSelected = doc.id == widget.selectedPlaceId;
 
               return Marker(
                 point: LatLng(data['latitude'], data['longitude']),
@@ -120,7 +123,11 @@ class _HomeMapState extends State<HomeMap> {
                     data['latitude'],
                     data['longitude'],
                   ),
-                  child: const Icon(Icons.circle, color: Colors.red, size: 20),
+                  child: Icon(
+                    Icons.circle,
+                    color: isSelected ? Colors.green : Colors.red,
+                    size: 20,
+                  ),
                 ),
               );
             }).toList();

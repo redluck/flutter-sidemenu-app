@@ -63,7 +63,10 @@ class _Page1State extends State<Page1> {
     });
   }
 
-  void _onListItemPressed(double lat, double lon) {
+  void _onListItemPressed(String id, double lat, double lon) {
+    setState(() {
+      _selectedId = id;
+    });
     _mapController.moveTo(lat, lon);
   }
 
@@ -84,6 +87,7 @@ class _Page1State extends State<Page1> {
               child: HomeMap(
                 onMarkerTap: _onMarkerTap,
                 controller: _mapController,
+                selectedPlaceId: _selectedId,
               ),
             ),
             /*====================================================================================================+
@@ -128,8 +132,9 @@ class _Page1State extends State<Page1> {
                           ? LandmarksList(
                               collapsed: _isCollapsed,
                               scrollController: _listController,
-                              onItemTap: (lat, lon) {
+                              onItemTap: (id, lat, lon) {
                                 _onListItemPressed(
+                                  id,
                                   lat.toDouble(),
                                   lon.toDouble(),
                                 );

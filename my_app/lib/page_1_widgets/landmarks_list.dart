@@ -6,7 +6,7 @@ import 'package:my_app/page_1_widgets/landmarks_list_item.dart';
 class LandmarksList extends StatefulWidget {
   final bool collapsed;
   final ScrollController scrollController;
-  final void Function(num lat, num lon) onItemTap;
+  final void Function(String id, num lat, num lon) onItemTap;
 
   const LandmarksList({
     super.key,
@@ -72,6 +72,7 @@ class _LandmarksListState extends State<LandmarksList> {
                               onTap: () {
                                 selectedPlaceName.value = place['name'];
                                 widget.onItemTap(
+                                  place.id,
                                   place['latitude'],
                                   place['longitude'],
                                 );
