@@ -3,37 +3,26 @@ import 'package:flutter/material.dart';
 import 'package:my_app/firestore_service.dart';
 import 'package:my_app/page_1_widgets/landmarks_list_item.dart';
 
-class LandmarksList extends StatefulWidget {
+class LandmarksList extends StatelessWidget {
   final bool collapsed;
   final ScrollController scrollController;
   final void Function(String id, num lat, num lon) onItemTap;
+  final ValueNotifier<String> selectedPlaceIdNotifier;
 
   const LandmarksList({
     super.key,
     required this.collapsed,
     required this.scrollController,
     required this.onItemTap,
+    required this.selectedPlaceIdNotifier,
   });
-
-  @override
-  State<LandmarksList> createState() => _LandmarksListState();
-}
-
-class _LandmarksListState extends State<LandmarksList> {
-  late final ValueNotifier<String?> selectedPlaceName = ValueNotifier(null);
-
-  @override
-  void dispose() {
-    selectedPlaceName.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: AnimatedSwitcher(
         duration: const Duration(milliseconds: 200),
-        child: widget.collapsed
+        child: collapsed
             ? const SizedBox.shrink()
             : StreamBuilder<QuerySnapshot>(
                 stream: FirestoreService().getPlaces(),
@@ -49,19 +38,19 @@ class _LandmarksListState extends State<LandmarksList> {
                     return const Center(child: Text('No places yet'));
                   }
                   return Scrollbar(
-                    controller: widget.scrollController,
+                    controller: scrollController,
                     thumbVisibility: true,
                     radius: const Radius.circular(12),
-                    child: ValueListenableBuilder<String?>(
-                      valueListenable: selectedPlaceName,
-                      builder: (context, selected, _) {
+                    child: ValueListenableBuilder<String>(
+                      valueListenable: selectedPlaceIdNotifier,
+                      builder: (context, selectedId, _) {
                         return ListView.builder(
-                          controller: widget.scrollController,
+                          controller: scrollController,
                           padding: const EdgeInsets.symmetric(vertical: 6),
                           itemCount: docs.length,
                           itemBuilder: (context, index) {
                             final place = docs[index];
-                            final isSelected = selected == place['name'];
+                            final isSelected = selectedId == place.id;
 
                             return LandmarksListItem(
                               name: place['name'],
@@ -70,8 +59,7 @@ class _LandmarksListState extends State<LandmarksList> {
                               longitude: place['longitude'],
                               isSelected: isSelected,
                               onTap: () {
-                                selectedPlaceName.value = place['name'];
-                                widget.onItemTap(
+                                onItemTap(
                                   place.id,
                                   place['latitude'],
                                   place['longitude'],

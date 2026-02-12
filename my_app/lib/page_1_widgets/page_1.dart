@@ -15,6 +15,7 @@ class _Page1State extends State<Page1> {
   bool _isCollapsed = false;
   bool _markerTapped = false;
   String _selectedId = '';
+  late final ValueNotifier<String> _selectedIdNotifier;
   String _selectedTitle = '';
   String _selectedDescription = '';
   String _selectedSet = '';
@@ -30,11 +31,13 @@ class _Page1State extends State<Page1> {
     super.initState();
     _listController = ScrollController();
     _mapController = HomeMapController();
+    _selectedIdNotifier = ValueNotifier<String>('');
   }
 
   @override
   void dispose() {
     _listController.dispose();
+    _selectedIdNotifier.dispose();
     super.dispose();
   }
 
@@ -47,6 +50,7 @@ class _Page1State extends State<Page1> {
   void _onMarkerTap(String id, String name, String description, String set, double latitude, double longitude) {
     setState(() {
       _selectedId = id;
+      _selectedIdNotifier.value = id;
       _selectedTitle = name;
       _selectedDescription = description;
       _selectedSet = set;
@@ -64,9 +68,7 @@ class _Page1State extends State<Page1> {
   }
 
   void _onListItemPressed(String id, double lat, double lon) {
-    setState(() {
-      _selectedId = id;
-    });
+    _selectedIdNotifier.value = id;
     _mapController.moveTo(lat, lon);
   }
 
@@ -87,7 +89,7 @@ class _Page1State extends State<Page1> {
               child: HomeMap(
                 onMarkerTap: _onMarkerTap,
                 controller: _mapController,
-                selectedPlaceId: _selectedId,
+                selectedPlaceIdNotifier: _selectedIdNotifier,
               ),
             ),
             /*====================================================================================================+
@@ -132,6 +134,7 @@ class _Page1State extends State<Page1> {
                           ? LandmarksList(
                               collapsed: _isCollapsed,
                               scrollController: _listController,
+                              selectedPlaceIdNotifier: _selectedIdNotifier,
                               onItemTap: (id, lat, lon) {
                                 _onListItemPressed(
                                   id,

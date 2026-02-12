@@ -8,13 +8,13 @@ import 'package:my_app/firestore_service.dart';
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
   final void Function(String id, String name, String description, String set, double latitude, double longitude) onMarkerTap;
-  final String selectedPlaceId;
+  final ValueNotifier<String> selectedPlaceIdNotifier;
 
   const HomeMap({
     super.key,
     required this.controller,
     required this.onMarkerTap,
-    required this.selectedPlaceId,
+    required this.selectedPlaceIdNotifier,
   });
 
   @override
@@ -106,65 +106,70 @@ class _HomeMapState extends State<HomeMap> {
               return const Center(child: CircularProgressIndicator());
             }
 
-            final markers = snapshot.data!.docs.map((doc) {
-              final data = doc.data() as Map<String, dynamic>;
-              final isSelected = doc.id == widget.selectedPlaceId;
+            return ValueListenableBuilder<String>(
+              valueListenable: widget.selectedPlaceIdNotifier,
+              builder: (context, selectedId, _) {
+                final markers = snapshot.data!.docs.map((doc) {
+                  final data = doc.data() as Map<String, dynamic>;
+                  final isSelected = doc.id == selectedId;
 
-              return Marker(
-                point: LatLng(data['latitude'], data['longitude']),
-                width: 40,
-                height: 40,
-                child: GestureDetector(
-                  onTap: () => widget.onMarkerTap(
-                    doc.id, 
-                    data['name'], 
-                    data['description'],
-                    data['set'] ?? '',
-                    data['latitude'],
-                    data['longitude'],
-                  ),
-                  child: Icon(
-                    Icons.circle,
-                    color: isSelected ? Colors.green : Colors.red,
-                    size: 20,
-                  ),
-                ),
-              );
-            }).toList();
+                  return Marker(
+                    point: LatLng(data['latitude'], data['longitude']),
+                    width: 40,
+                    height: 40,
+                    child: GestureDetector(
+                      onTap: () => widget.onMarkerTap(
+                        doc.id, 
+                        data['name'], 
+                        data['description'],
+                        data['set'] ?? '',
+                        data['latitude'],
+                        data['longitude'],
+                      ),
+                      child: Icon(
+                        Icons.circle,
+                        color: isSelected ? Colors.green : Colors.red,
+                        size: 20,
+                      ),
+                    ),
+                  );
+                }).toList();
 
-            // Aggiungere il marker della posizione corrente se disponibile
-            if (_currentLocation != null) {
-              markers.add(
-                Marker(
-                  point: _currentLocation!,
-                  width: 40,
-                  height: 40,
-                  child: Icon(
-                    Icons.adjust,
-                    color: Colors.blue[700],
-                    size: 40,
-                  ),
-                ),
-              );
-            }
+                // Aggiungere il marker della posizione corrente se disponibile
+                if (_currentLocation != null) {
+                  markers.add(
+                    Marker(
+                      point: _currentLocation!,
+                      width: 40,
+                      height: 40,
+                      child: Icon(
+                        Icons.adjust,
+                        color: Colors.blue[700],
+                        size: 40,
+                      ),
+                    ),
+                  );
+                }
 
-            /*--------------------------------------------------+
-            | Mappa                                             |
-            +--------------------------------------------------*/
-            return FlutterMap(
-              mapController: _mapController,
-              options: MapOptions(
-                initialCenter: LatLng(41.9028, 12.4964),
-                initialZoom: 16,
-              ),
-              children: [
-                TileLayer(
-                  urlTemplate:
-                      "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
-                  subdomains: ['a', 'b', 'c'],
-                ),
-                MarkerLayer(markers: markers),
-              ],
+                /*--------------------------------------------------+
+                | Mappa                                             |
+                +--------------------------------------------------*/
+                return FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(41.9028, 12.4964),
+                    initialZoom: 16,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
+                      subdomains: ['a', 'b', 'c'],
+                    ),
+                    MarkerLayer(markers: markers),
+                  ],
+                );
+              },
             );
           },
         ),
