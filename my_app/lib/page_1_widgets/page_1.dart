@@ -5,7 +5,9 @@ import 'package:my_app/page_1_widgets/home_map.dart';
 import 'package:my_app/page_1_widgets/landmarks_list.dart';
 
 class Page1 extends StatefulWidget {
-  const Page1({super.key});
+  final String? filterBySet;
+
+  const Page1({super.key, this.filterBySet});
 
   @override
   State<Page1> createState() => _Page1State();
@@ -90,6 +92,7 @@ class _Page1State extends State<Page1> {
                 onMarkerTap: _onMarkerTap,
                 controller: _mapController,
                 selectedPlaceIdNotifier: _selectedIdNotifier,
+                selectedSet: widget.filterBySet,
               ),
             ),
             /*====================================================================================================+
@@ -135,6 +138,7 @@ class _Page1State extends State<Page1> {
                               collapsed: _isCollapsed,
                               scrollController: _listController,
                               selectedPlaceIdNotifier: _selectedIdNotifier,
+                              selectedSet: widget.filterBySet,
                               onItemTap: (id, lat, lon) {
                                 _onListItemPressed(
                                   id,

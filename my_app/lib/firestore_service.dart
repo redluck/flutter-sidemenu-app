@@ -3,8 +3,12 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class FirestoreService {
   final _firestore = FirebaseFirestore.instance;
 
-  Stream<QuerySnapshot> getPlaces() {
-    return _firestore.collection('places').snapshots();
+  Stream<QuerySnapshot> getPlaces(String? set) {
+    Query query = _firestore.collection('places');
+    if (set != null) {
+      query = query.where('set', isEqualTo: set);
+    }
+    return query.snapshots();
   }
 
   Future<void> addPlace({

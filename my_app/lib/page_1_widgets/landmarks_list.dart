@@ -8,6 +8,7 @@ class LandmarksList extends StatelessWidget {
   final ScrollController scrollController;
   final void Function(String id, num lat, num lon) onItemTap;
   final ValueNotifier<String> selectedPlaceIdNotifier;
+  final String? selectedSet;
 
   const LandmarksList({
     super.key,
@@ -15,6 +16,7 @@ class LandmarksList extends StatelessWidget {
     required this.scrollController,
     required this.onItemTap,
     required this.selectedPlaceIdNotifier,
+    this.selectedSet,
   });
 
   @override
@@ -25,7 +27,9 @@ class LandmarksList extends StatelessWidget {
         child: collapsed
             ? const SizedBox.shrink()
             : StreamBuilder<QuerySnapshot>(
-                stream: FirestoreService().getPlaces(),
+                stream: selectedSet != null
+                    ? FirestoreService().getPlaces(selectedSet!)
+                    : FirestoreService().getPlaces(null),
                 builder: (context, snapshot) {
                   if (snapshot.hasError) {
                     return Center(child: Text('Error: ${snapshot.error}'));

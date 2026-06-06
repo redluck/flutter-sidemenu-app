@@ -47,6 +47,7 @@ class _HomePageState extends State<HomePage> {
   // List of widgets (pages)
   final List<Widget> _pages = <Widget>[
     const Page1(),
+    const Page1(filterBySet: 'London'),
     const Page2(),
     const Page3(),
   ];
@@ -54,6 +55,7 @@ class _HomePageState extends State<HomePage> {
   // List of titles for the AppBar
   final List<String> _appBarTitles = <String>[
     'Title One',
+    'London',
     'Title Two',
     'Title Three',
   ];
@@ -114,19 +116,27 @@ class _HomePageState extends State<HomePage> {
               },
             ),
             ListTile(
-              leading: const Icon(Icons.settings),
-              title: const Text('Page 2'),
-              selected: _selectedIndex == 1,
+              leading: const Icon(Icons.home),
+              title: const Text('London'),
+              selected: _selectedIndex == 1, // Highlight if selected
               onTap: () {
                 _onItemTapped(1);
               },
             ),
             ListTile(
-              leading: const Icon(Icons.info),
-              title: const Text('Page 3'),
+              leading: const Icon(Icons.settings),
+              title: const Text('Page 2'),
               selected: _selectedIndex == 2,
               onTap: () {
                 _onItemTapped(2);
+              },
+            ),
+            ListTile(
+              leading: const Icon(Icons.info),
+              title: const Text('Page 3'),
+              selected: _selectedIndex == 3,
+              onTap: () {
+                _onItemTapped(3);
               },
             ),
           ],

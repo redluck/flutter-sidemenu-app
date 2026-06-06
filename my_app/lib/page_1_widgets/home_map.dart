@@ -9,12 +9,14 @@ class HomeMap extends StatefulWidget {
   final HomeMapController controller;
   final void Function(String id, String name, String description, String set, double latitude, double longitude) onMarkerTap;
   final ValueNotifier<String> selectedPlaceIdNotifier;
+  final String? selectedSet;
 
   const HomeMap({
     super.key,
     required this.controller,
     required this.onMarkerTap,
     required this.selectedPlaceIdNotifier,
+    this.selectedSet,
   });
 
   @override
@@ -100,7 +102,9 @@ class _HomeMapState extends State<HomeMap> {
     return Stack(
       children: [
         StreamBuilder<QuerySnapshot>(
-          stream: FirestoreService().getPlaces(),
+          stream: widget.selectedSet != null
+            ? FirestoreService().getPlaces(widget.selectedSet!)
+            : FirestoreService().getPlaces(null),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
