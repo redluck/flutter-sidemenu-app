@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
+import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:my_app/firestore_service.dart';
@@ -27,12 +28,17 @@ class _HomeMapState extends State<HomeMap> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
   bool _isLoadingLocation = false;
+  late final Future<Style> _style;
 
   @override
   void initState() {
     super.initState();
     widget.controller.bind(_moveTo);
     widget.controller.bindCurrentLocation(_centerOnCurrentLocation);
+    _style = StyleReader(
+      uri:
+          'https://api.maptiler.com/maps/streets-v4/style.json?key=k8cZ1Gqxm0TUPe6i10L8',
+    ).read();
   }
 
   void _moveTo(double lat, double lon) {
@@ -103,8 +109,8 @@ class _HomeMapState extends State<HomeMap> {
       children: [
         StreamBuilder<QuerySnapshot>(
           stream: widget.selectedSet != null
-            ? FirestoreService().getPlaces(widget.selectedSet!)
-            : FirestoreService().getPlaces(null),
+              ? FirestoreService().getPlaces(widget.selectedSet!)
+              : FirestoreService().getPlaces(null),
           builder: (context, snapshot) {
             if (!snapshot.hasData) {
               return const Center(child: CircularProgressIndicator());
@@ -123,8 +129,8 @@ class _HomeMapState extends State<HomeMap> {
                     height: 40,
                     child: GestureDetector(
                       onTap: () => widget.onMarkerTap(
-                        doc.id, 
-                        data['name'], 
+                        doc.id,
+                        data['name'],
                         data['description'],
                         data['set'] ?? '',
                         data['latitude'],
@@ -158,20 +164,33 @@ class _HomeMapState extends State<HomeMap> {
                 /*--------------------------------------------------+
                 | Mappa                                             |
                 +--------------------------------------------------*/
-                return FlutterMap(
-                  mapController: _mapController,
-                  options: MapOptions(
-                    initialCenter: LatLng(41.9028, 12.4964),
-                    initialZoom: 16,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
-                      subdomains: ['a', 'b', 'c'],
-                    ),
-                    MarkerLayer(markers: markers),
-                  ],
+                return FutureBuilder<Style>(
+                  future: _style,
+                  builder: (context, styleSnapshot) {
+                    if (!styleSnapshot.hasData) {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+
+                    final style = styleSnapshot.data!;
+
+                    return FlutterMap(
+                      mapController: _mapController,
+                      options: MapOptions(
+                        initialCenter: LatLng(41.9028, 12.4964),
+                        initialZoom: 14,
+                        maxZoom: 19,
+                      ),
+                      children: [
+                        VectorTileLayer(
+                          theme: style.theme,
+                          sprites: style.sprites,
+                          tileProviders: style.providers,
+                          maximumZoom: 19,
+                        ),
+                        MarkerLayer(markers: markers),
+                      ],
+                    );
+                  },
                 );
               },
             );
@@ -246,7 +265,7 @@ class HomeMapController {
   // Riferimento al metodo interno della mappa (_moveTo) che effettua lo spostamento
   // viene assegnato tramite bind() quando la mappa è pronta
   void Function(double lat, double lon)? _move;
-  
+
   // Riferimento al metodo interno della mappa (_centerOnCurrentLocation)
   // viene assegnato tramite bindCurrentLocation() quando la mappa è pronta
   Future<void> Function()? _centerOnCurrentLocation;
