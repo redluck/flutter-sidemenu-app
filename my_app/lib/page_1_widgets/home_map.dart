@@ -1,14 +1,21 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
-import 'package:vector_map_tiles/vector_map_tiles.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
-  final void Function(String id, String name, String description, String set, double latitude, double longitude) onMarkerTap;
+  final void Function(
+    String id,
+    String name,
+    String description,
+    String set,
+    double latitude,
+    double longitude,
+  )
+  onMarkerTap;
   final ValueNotifier<String> selectedPlaceIdNotifier;
   final String? selectedSet;
 
@@ -28,22 +35,18 @@ class _HomeMapState extends State<HomeMap> {
   final MapController _mapController = MapController();
   LatLng? _currentLocation;
   bool _isLoadingLocation = false;
-  late final Future<Style> _style;
 
   @override
   void initState() {
     super.initState();
     widget.controller.bind(_moveTo);
     widget.controller.bindCurrentLocation(_centerOnCurrentLocation);
-    _style = StyleReader(
-      uri:
-          'https://api.maptiler.com/maps/streets-v4/style.json?key=k8cZ1Gqxm0TUPe6i10L8',
-    ).read();
   }
 
   void _moveTo(double lat, double lon) {
-    double offsetKm = 0.4;     // Km verso nord per centrare sopra la lista
-    const kmPerDegree = 111.0; // Costante: 1 grado di latitudine = 111 km sulla superficie terrestre
+    double offsetKm = 0.4; // Km verso nord per centrare sopra la lista
+    const kmPerDegree =
+        111.0; // Costante: 1 grado di latitudine = 111 km sulla superficie terrestre
     final shiftedLat = lat - (offsetKm / kmPerDegree);
     final point = LatLng(shiftedLat, lon);
     _mapController.move(point, 16.0);
@@ -164,33 +167,20 @@ class _HomeMapState extends State<HomeMap> {
                 /*--------------------------------------------------+
                 | Mappa                                             |
                 +--------------------------------------------------*/
-                return FutureBuilder<Style>(
-                  future: _style,
-                  builder: (context, styleSnapshot) {
-                    if (!styleSnapshot.hasData) {
-                      return const Center(child: CircularProgressIndicator());
-                    }
-
-                    final style = styleSnapshot.data!;
-
-                    return FlutterMap(
-                      mapController: _mapController,
-                      options: MapOptions(
-                        initialCenter: LatLng(41.9028, 12.4964),
-                        initialZoom: 14,
-                        maxZoom: 19,
-                      ),
-                      children: [
-                        VectorTileLayer(
-                          theme: style.theme,
-                          sprites: style.sprites,
-                          tileProviders: style.providers,
-                          maximumZoom: 19,
-                        ),
-                        MarkerLayer(markers: markers),
-                      ],
-                    );
-                  },
+                return FlutterMap(
+                  mapController: _mapController,
+                  options: MapOptions(
+                    initialCenter: LatLng(41.9028, 12.4964),
+                    initialZoom: 16,
+                  ),
+                  children: [
+                    TileLayer(
+                      urlTemplate:
+                          "https://api.maptiler.com/maps/streets-v4/{z}/{x}/{y}.png?key=k8cZ1Gqxm0TUPe6i10L8",
+                      subdomains: ['a', 'b', 'c'],
+                    ),
+                    MarkerLayer(markers: markers),
+                  ],
                 );
               },
             );
