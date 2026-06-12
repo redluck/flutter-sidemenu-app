@@ -7,6 +7,7 @@ import 'package:my_app/firestore_service.dart';
 
 class HomeMap extends StatefulWidget {
   final HomeMapController controller;
+
   final void Function(
     String id,
     String name,
@@ -18,6 +19,7 @@ class HomeMap extends StatefulWidget {
   onMarkerTap;
   final ValueNotifier<String> selectedPlaceIdNotifier;
   final String? selectedSet;
+  final LatLng? initialCenter;
 
   const HomeMap({
     super.key,
@@ -25,6 +27,7 @@ class HomeMap extends StatefulWidget {
     required this.onMarkerTap,
     required this.selectedPlaceIdNotifier,
     this.selectedSet,
+    this.initialCenter,
   });
 
   @override
@@ -41,6 +44,14 @@ class _HomeMapState extends State<HomeMap> {
     super.initState();
     widget.controller.bind(_moveTo);
     widget.controller.bindCurrentLocation(_centerOnCurrentLocation);
+  }
+
+  @override
+  void didUpdateWidget(covariant HomeMap oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.initialCenter != oldWidget.initialCenter && widget.initialCenter != null) {
+      _mapController.move(widget.initialCenter!, 11);
+    }
   }
 
   void _moveTo(double lat, double lon) {
@@ -170,8 +181,8 @@ class _HomeMapState extends State<HomeMap> {
                 return FlutterMap(
                   mapController: _mapController,
                   options: MapOptions(
-                    initialCenter: LatLng(41.9028, 12.4964),
-                    initialZoom: 16,
+                    initialCenter: widget.initialCenter ?? LatLng(41.8000, 12.4964),
+                    initialZoom: 11,
                   ),
                   children: [
                     TileLayer(

@@ -46,8 +46,13 @@ class _HomePageState extends State<HomePage> {
 
   // List of widgets (pages)
   final List<Widget> _pages = <Widget>[
-    const Page1(),
-    const Page1(filterBySet: 'London'),
+    const Page1(key: ValueKey('page1-default')),
+    const Page1(
+      key: ValueKey('page1-london'),
+      filterBySet: 'London',
+      initialLatitude: 51.4300,
+      initialLongitude: -0.1278,
+    ),
     const Page2(),
     const Page3(),
   ];

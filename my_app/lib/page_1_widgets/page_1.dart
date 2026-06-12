@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:my_app/page_1_widgets/actions_row.dart';
 import 'package:my_app/page_1_widgets/detail_card.dart';
 import 'package:my_app/page_1_widgets/home_map.dart';
@@ -6,8 +7,15 @@ import 'package:my_app/page_1_widgets/landmarks_list.dart';
 
 class Page1 extends StatefulWidget {
   final String? filterBySet;
+  final double? initialLatitude;
+  final double? initialLongitude;
 
-  const Page1({super.key, this.filterBySet});
+  const Page1({
+    super.key,
+    this.filterBySet,
+    this.initialLatitude,
+    this.initialLongitude,
+  });
 
   @override
   State<Page1> createState() => _Page1State();
@@ -93,6 +101,9 @@ class _Page1State extends State<Page1> {
                 controller: _mapController,
                 selectedPlaceIdNotifier: _selectedIdNotifier,
                 selectedSet: widget.filterBySet,
+                initialCenter: widget.initialLatitude != null && widget.initialLongitude != null
+                    ? LatLng(widget.initialLatitude!, widget.initialLongitude!)
+                    : null,
               ),
             ),
             /*====================================================================================================+
